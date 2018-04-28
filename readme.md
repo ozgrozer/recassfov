@@ -1,5 +1,5 @@
 # recassfov
-React Client and Server Side Form Validation
+**Re**act **C**lient **a**nd **S**erver **S**ide **Fo**rm **V**alidation
 
 [![npm](https://img.shields.io/npm/v/recassfov.svg?style=flat-square)](https://www.npmjs.com/package/recassfov)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ozgrozer/recassfov/blob/master/license)
