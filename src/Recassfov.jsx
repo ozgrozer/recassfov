@@ -7,47 +7,72 @@ class Provider extends React.Component {
   constructor () {
     super()
     this.state = {
-      values: {}
+      formItems: {},
+      totalValidations: 0
     }
   }
 
   setFormItem (item) {
-    const values = this.state.values
-    values[item.name] = {
+    const formItems = this.state.formItems
+
+    formItems[item.name] = {
       value: item.value || '',
       validations: item.validations || [],
-      invalidFeedback: item.validations[0].invalidFeedback,
+      invalidFeedback: item.validations[0].invalidFeedback || '',
       className: ''
     }
-    this.setState({ values })
+
+    this.setState({ formItems })
+
+    this.setState((prevState) => ({
+      totalValidations: prevState.totalValidations + item.validations.length
+    }))
   }
 
   handleInput (e) {
     const item = e.target
-    const values = this.state.values
+    const formItems = this.state.formItems
 
     if (item.type === 'checkbox') {
-      values[item.name].value = !this.state.values[item.name]
+      formItems[item.name].value = !this.state.formItems[item.name]
     } else {
-      values[item.name].value = item.value
+      formItems[item.name].value = item.value
     }
-    this.setState({ values })
+
+    this.setState({ formItems })
   }
 
-  handleForm (e) {
+  onSubmit (onSubmit, onSubmitValidForm, onSubmitInvalidForm, e) {
     e.preventDefault()
 
-    const values = this.state.values
-    Object.keys(values).map((itemName) => {
-      const item = values[itemName]
+    if (onSubmit) onSubmit()
+
+    const formItems = this.state.formItems
+
+    let howManyOfFormItemsAreValidated = 0
+
+    Object.keys(formItems).map((itemName) => {
+      const item = formItems[itemName]
 
       item.validations.map((validation) => {
         const validate = validator[validation.rule](item.value, validation.args)
+
+        if (validate) howManyOfFormItemsAreValidated++
+
+        item.invalidFeedback = 'test'
         item.className = validate ? '' : ' is-invalid'
+
         console.log(itemName, item.value, validation.rule, validate)
       })
     })
-    this.setState({ values })
+
+    this.setState({ formItems })
+
+    if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
+      if (onSubmitValidForm) onSubmitValidForm()
+    } else {
+      if (onSubmitInvalidForm) onSubmitInvalidForm()
+    }
   }
 
   render () {
@@ -55,7 +80,7 @@ class Provider extends React.Component {
       state: this.state,
       setFormItem: this.setFormItem.bind(this),
       handleInput: this.handleInput.bind(this),
-      handleForm: this.handleForm.bind(this)
+      onSubmit: this.onSubmit.bind(this)
     }
 
     return (
@@ -71,7 +96,14 @@ class Form extends React.Component {
     return (
       <form
         noValidate
-        onSubmit={this.props.store.handleForm}
+        onSubmit={
+          this.props.store.onSubmit.bind(
+            this,
+            this.props.onSubmit,
+            this.props.onSubmitValidForm,
+            this.props.onSubmitInvalidForm
+          )
+        }
       >
         {this.props.children}
       </form>
@@ -87,7 +119,7 @@ class Input extends React.Component {
 
   render () {
     const { validations, store, className, ...otherProps } = this.props
-    const thisItem = store.state.values[this.props.name]
+    const thisItem = store.state.formItems[this.props.name]
 
     return (
       <React.Fragment>
@@ -118,9 +150,7 @@ const connectProvider = (Component) => {
   return (props) => (
     <Provider>
       <Context.Consumer>
-        {(store) => {
-          return <Component {...props} store={store} />
-        }}
+        {(store) => <Component {...props} store={store} />}
       </Context.Consumer>
     </Provider>
   )
@@ -129,9 +159,7 @@ const connectProvider = (Component) => {
 const connectConsumer = (Component) => {
   return (props) => (
     <Context.Consumer>
-      {(store) => {
-        return <Component {...props} store={store} />
-      }}
+      {(store) => <Component {...props} store={store} />}
     </Context.Consumer>
   )
 }

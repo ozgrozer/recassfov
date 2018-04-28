@@ -3,38 +3,42 @@ import ReactDOM from 'react-dom'
 
 import { Form, Input } from './../src/Recassfov'
 
-class App extends React.Component {
-  render () {
-    const validations = {
-      username: [
-        {
-          rule: 'isLength',
-          args: { min: 4, max: 32 },
-          invalidFeedback: 'please provide a username (min: 4, max: 32)'
-        }
-      ],
-      email: [
-        {
-          rule: 'isLength',
-          args: { min: 1 },
-          invalidFeedback: 'please provide an email'
-        },
-        {
-          rule: 'isEmail',
-          invalidFeedback: 'please provide a valid email'
-        }
-      ],
-      password: [
-        {
-          rule: 'isLength',
-          args: { min: 4, max: 32 },
-          invalidFeedback: 'please provide a password (min: 4, max: 32)'
-        }
-      ]
-    }
+const validations = {
+  username: [{
+    rule: 'isLength',
+    args: { min: 4, max: 32 },
+    invalidFeedback: 'please provide a username (min: 4, max: 32)'
+  }],
+  email: [{
+    rule: 'isLength',
+    args: { min: 1 },
+    invalidFeedback: 'please provide an email'
+  }, {
+    rule: 'isEmail',
+    invalidFeedback: 'please provide a valid email'
+  }],
+  password: [{
+    rule: 'isLength',
+    args: { min: 4, max: 32 },
+    invalidFeedback: 'please provide a password (min: 4, max: 32)'
+  }]
+}
 
+class App extends React.Component {
+  onSubmitValidForm () {
+    console.log('onSubmitValidForm')
+  }
+
+  onSubmitInvalidForm () {
+    console.log('onSubmitInvalidForm')
+  }
+
+  render () {
     return (
-      <Form>
+      <Form
+        onSubmitValidForm={this.onSubmitValidForm.bind(this)}
+        onSubmitInvalidForm={this.onSubmitInvalidForm.bind(this)}
+      >
         <h2>Sign up</h2>
 
         <div>
