@@ -6,10 +6,17 @@ import { Form, Input } from './../src/Recassfov'
 class App extends React.Component {
   render () {
     const validations = {
+      username: [
+        {
+          rule: 'isLength',
+          args: { min: 4, max: 32 },
+          invalidFeedback: 'please provide a username (min: 4, max: 32)'
+        }
+      ],
       email: [
         {
           rule: 'isLength',
-          args: {min: 1},
+          args: { min: 1 },
           invalidFeedback: 'please provide an email'
         },
         {
@@ -20,20 +27,30 @@ class App extends React.Component {
       password: [
         {
           rule: 'isLength',
-          args: {min: 1},
-          invalidFeedback: 'please provide a password'
+          args: { min: 4, max: 32 },
+          invalidFeedback: 'please provide a password (min: 4, max: 32)'
         }
       ]
     }
 
     return (
       <Form>
+        <h2>Sign up</h2>
+
         <div>
           <Input
             type='text'
+            name='username'
+            placeholder='username'
+            validations={validations.username}
+          />
+        </div>
+
+        <div>
+          <Input
+            type='email'
             name='email'
             placeholder='email'
-            className='test test2'
             validations={validations.email}
           />
         </div>
@@ -45,7 +62,6 @@ class App extends React.Component {
             placeholder='password'
             validations={validations.password}
           />
-          <div className='valid-feedback'>valid</div>
         </div>
 
         <div>
