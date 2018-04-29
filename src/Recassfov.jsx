@@ -72,6 +72,7 @@ class Provider extends React.Component {
 
         if (validate) howManyOfFormItemsAreValidated++
 
+        item.invalidFeedback = validation.invalidFeedback
         item.className = validate ? '' : ' is-invalid'
       })
     })
