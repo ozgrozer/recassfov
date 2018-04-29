@@ -59,17 +59,20 @@ class Provider extends React.Component {
 
         if (validate) howManyOfFormItemsAreValidated++
 
-        item.invalidFeedback = 'test'
         item.className = validate ? '' : ' is-invalid'
-
-        console.log(itemName, item.value, validation.rule, validate)
       })
     })
 
     this.setState({ formItems })
 
     if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
-      if (onSubmitValidForm) onSubmitValidForm()
+      if (onSubmitValidForm) {
+        const _formItems = Object.keys(formItems).reduce((previous, current) => {
+          previous[current] = formItems[current].value
+          return previous
+        }, {})
+        onSubmitValidForm(_formItems)
+      }
     } else {
       if (onSubmitInvalidForm) onSubmitInvalidForm()
     }

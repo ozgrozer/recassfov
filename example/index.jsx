@@ -4,29 +4,32 @@ import ReactDOM from 'react-dom'
 import { Form, Input } from './../src/Recassfov'
 
 const validations = {
-  username: [{
-    rule: 'isLength',
-    args: { min: 4, max: 32 },
-    invalidFeedback: 'please provide a username (min: 4, max: 32)'
-  }],
-  email: [{
-    rule: 'isLength',
-    args: { min: 1 },
-    invalidFeedback: 'please provide an email'
-  }, {
-    rule: 'isEmail',
-    invalidFeedback: 'please provide a valid email'
-  }],
-  password: [{
-    rule: 'isLength',
-    args: { min: 4, max: 32 },
-    invalidFeedback: 'please provide a password (min: 4, max: 32)'
-  }]
+  username: [
+    {
+      rule: 'isLength',
+      args: { min: 4, max: 32 },
+      invalidFeedback: 'please provide a username (min: 4, max: 32)'
+    }
+  ],
+  email: [
+    {
+      rule: 'isEmail',
+      invalidFeedback: 'please provide a valid email'
+    }
+  ],
+  password: [
+    {
+      rule: 'isLength',
+      args: { min: 4, max: 32 },
+      invalidFeedback: 'please provide a password (min: 4, max: 32)'
+    }
+  ]
 }
 
 class App extends React.Component {
-  onSubmitValidForm () {
+  onSubmitValidForm (formItems) {
     console.log('onSubmitValidForm')
+    console.log(formItems)
   }
 
   onSubmitInvalidForm () {
