@@ -2,6 +2,7 @@
   "name": "recassfov",
   "version": "0.0.1",
   "description": "React Client and Server Side Form Validation",
+  "main": "./src/Recassfov.jsx",
   "scripts": {
     "start": "parcel ./example/index.html --out-dir ./dist --public-url /",
     "build": "parcel build ./example/index.html --out-dir ./dist --public-url /"
