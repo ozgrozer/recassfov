@@ -1,6 +1,6 @@
 {
   "name": "recassfov",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React Client and Server Side Form Validation",
   "main": "./src/Recassfov.jsx",
   "scripts": {
@@ -10,14 +10,12 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "validator": "^9.4.1"
-  },
-  "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "parcel-bundler": "^1.7.1",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "validator": "^9.4.1"
   }
 }
