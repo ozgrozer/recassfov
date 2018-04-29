@@ -15,9 +15,61 @@ $ yarn add recassfov
 ```
 
 ## Usage
-```js
+
+1. Import library.
+
+```jsx
 import { Form, Input } from 'recassfov'
-...
+```
+
+2. Create validation rules. ([Validator.js](https://github.com/chriso/validator.js#validators))
+
+```jsx
+const validations = {
+  username: [
+    {
+      rule: 'isLength',
+      args: { min: 4, max: 32 },
+      invalidFeedback: 'please provide a username (min: 4, max: 32)'
+    }
+  ],
+  email: [
+    {
+      rule: 'isEmail',
+      invalidFeedback: 'please provide a valid email'
+    }
+  ]
+}
+```
+
+3. Build your form.
+
+```jsx
+<Form
+  postUrl='http://example.com/post.php'
+>
+  <div>
+    <Input
+      type='text'
+      name='username'
+      placeholder='username'
+      validations={validations.username}
+    />
+  </div>
+
+  <div>
+    <Input
+      type='email'
+      name='email'
+      placeholder='email'
+      validations={validations.email}
+    />
+  </div>
+
+  <div>
+    <input type='submit' value='submit' />
+  </div>
+</Form>
 ```
 
 ## Contribution
