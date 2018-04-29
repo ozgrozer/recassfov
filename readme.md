@@ -5,16 +5,17 @@
 
 **Re**act **C**lient **a**nd **S**erver **S**ide **Fo**rm **V**alidation
 
-## Installation
-```sh
-# with npm
-$ npm i recassfov
-
-# or with yarn
-$ yarn add recassfov
-```
-
 ## Usage
+
+Install library.
+
+```sh
+# with yarn
+$ yarn add recassfov
+
+# or with npm
+$ npm i recassfov
+```
 
 Import library.
 
