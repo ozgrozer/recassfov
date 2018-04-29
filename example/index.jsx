@@ -27,6 +27,20 @@ const validations = {
 }
 
 class App extends React.Component {
+  /* fakeAjax (formItems) {
+    console.log('fakeAjax')
+    console.log(formItems)
+
+    setTimeout(() => {
+      console.log('1 second later')
+      const validations = {
+        username: 'username is already registered',
+        email: 'email is already registered'
+      }
+      serverSideValidation(validations)
+    }, 1000)
+  } */
+
   validForm (formItems) {
     console.log('validForm')
     console.log(formItems)
@@ -41,6 +55,7 @@ class App extends React.Component {
       <Form
         validForm={this.validForm.bind(this)}
         invalidForm={this.invalidForm.bind(this)}
+        postUrl='http://localhost/post.php'
       >
         <h2>Sign up</h2>
 
@@ -49,6 +64,7 @@ class App extends React.Component {
             type='text'
             name='username'
             placeholder='username'
+            value='john'
             validations={validations.username}
           />
         </div>
@@ -58,6 +74,7 @@ class App extends React.Component {
             type='email'
             name='email'
             placeholder='email'
+            value='john@doe.com'
             validations={validations.email}
           />
         </div>
@@ -67,6 +84,7 @@ class App extends React.Component {
             type='password'
             name='password'
             placeholder='password'
+            value='1234'
             validations={validations.password}
           />
         </div>

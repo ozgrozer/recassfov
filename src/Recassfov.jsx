@@ -1,5 +1,6 @@
 import React from 'react'
 import validator from 'validator'
+import axios from 'axios'
 
 const Context = React.createContext()
 
@@ -42,7 +43,7 @@ class Provider extends React.Component {
     this.setState({ formItems })
   }
 
-  onSubmit (onSubmit, validForm, invalidForm, e) {
+  onSubmit (onSubmit, validForm, invalidForm, postUrl, e) {
     e.preventDefault()
 
     if (onSubmit) onSubmit()
@@ -66,12 +67,22 @@ class Provider extends React.Component {
     this.setState({ formItems })
 
     if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
-      if (validForm) {
-        const _formItems = Object.keys(formItems).reduce((previous, current) => {
-          previous[current] = formItems[current].value
-          return previous
-        }, {})
-        validForm(_formItems)
+      const _formItems = Object.keys(formItems).reduce((previous, current) => {
+        previous[current] = formItems[current].value
+        return previous
+      }, {})
+
+      if (validForm) validForm(_formItems)
+
+      if (postUrl) {
+        axios
+          .post(postUrl, _formItems)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       }
     } else {
       if (invalidForm) invalidForm()
@@ -104,7 +115,8 @@ class Form extends React.Component {
             this,
             this.props.onSubmit,
             this.props.validForm,
-            this.props.invalidForm
+            this.props.invalidForm,
+            this.props.postUrl
           )
         }
       >
