@@ -27,20 +27,6 @@ const validations = {
 }
 
 class App extends React.Component {
-  /* fakeAjax (formItems) {
-    console.log('fakeAjax')
-    console.log(formItems)
-
-    setTimeout(() => {
-      console.log('1 second later')
-      const validations = {
-        username: 'username is already registered',
-        email: 'email is already registered'
-      }
-      serverSideValidation(validations)
-    }, 1000)
-  } */
-
   validForm (formItems) {
     console.log('validForm')
     console.log(formItems)

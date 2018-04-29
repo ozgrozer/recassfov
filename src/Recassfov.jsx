@@ -2,6 +2,18 @@ import React from 'react'
 import validator from 'validator'
 import axios from 'axios'
 
+const objectToUrlEncoded = (element, key, list) => {
+  list = list || []
+  if (typeof element === 'object') {
+    for (let idx in element) {
+      objectToUrlEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list)
+    }
+  } else {
+    list.push(key + '=' + encodeURIComponent(element))
+  }
+  return list.join('&')
+}
+
 const Context = React.createContext()
 
 class Provider extends React.Component {
@@ -75,10 +87,25 @@ class Provider extends React.Component {
       if (validForm) validForm(_formItems)
 
       if (postUrl) {
-        axios
-          .post(postUrl, _formItems)
+        axios({
+          method: 'post',
+          url: postUrl,
+          data: objectToUrlEncoded(_formItems),
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+          }
+        })
           .then((res) => {
-            console.log(res)
+            const validations = res.data.validations
+
+            if (Object.keys(validations).length) {
+              Object.keys(validations).map((itemName) => {
+                formItems[itemName].invalidFeedback = validations[itemName]
+                formItems[itemName].className = ' is-invalid'
+              })
+
+              this.setState({ formItems })
+            }
           })
           .catch((err) => {
             console.log(err)
