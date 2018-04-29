@@ -27,20 +27,20 @@ const validations = {
 }
 
 class App extends React.Component {
-  onValidFormSubmit (formItems) {
-    console.log('onValidFormSubmit')
+  validForm (formItems) {
+    console.log('validForm')
     console.log(formItems)
   }
 
-  onInvalidFormSubmit () {
-    console.log('onInvalidFormSubmit')
+  invalidForm () {
+    console.log('invalidForm')
   }
 
   render () {
     return (
       <Form
-        onValidFormSubmit={this.onValidFormSubmit.bind(this)}
-        onInvalidFormSubmit={this.onInvalidFormSubmit.bind(this)}
+        validForm={this.validForm.bind(this)}
+        invalidForm={this.invalidForm.bind(this)}
       >
         <h2>Sign up</h2>
 

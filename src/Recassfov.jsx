@@ -42,7 +42,7 @@ class Provider extends React.Component {
     this.setState({ formItems })
   }
 
-  onSubmit (onSubmit, onValidFormSubmit, onInvalidFormSubmit, e) {
+  onSubmit (onSubmit, validForm, invalidForm, e) {
     e.preventDefault()
 
     if (onSubmit) onSubmit()
@@ -66,15 +66,15 @@ class Provider extends React.Component {
     this.setState({ formItems })
 
     if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
-      if (onValidFormSubmit) {
+      if (validForm) {
         const _formItems = Object.keys(formItems).reduce((previous, current) => {
           previous[current] = formItems[current].value
           return previous
         }, {})
-        onValidFormSubmit(_formItems)
+        validForm(_formItems)
       }
     } else {
-      if (onInvalidFormSubmit) onInvalidFormSubmit()
+      if (invalidForm) invalidForm()
     }
   }
 
@@ -103,8 +103,8 @@ class Form extends React.Component {
           this.props.store.onSubmit.bind(
             this,
             this.props.onSubmit,
-            this.props.onValidFormSubmit,
-            this.props.onInvalidFormSubmit
+            this.props.validForm,
+            this.props.invalidForm
           )
         }
       >
