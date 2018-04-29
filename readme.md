@@ -16,13 +16,13 @@ $ yarn add recassfov
 
 ## Usage
 
-1. Import library.
+Import library.
 
 ```jsx
 import { Form, Input } from 'recassfov'
 ```
 
-2. Create validation rules. ([Validator.js](https://github.com/chriso/validator.js#validators))
+Create validation rules. ([Validator.js](https://github.com/chriso/validator.js#validators))
 
 ```jsx
 const validations = {
@@ -42,7 +42,7 @@ const validations = {
 }
 ```
 
-3. Build your form.
+Build your form.
 
 ```jsx
 <Form
@@ -71,6 +71,11 @@ const validations = {
   </div>
 </Form>
 ```
+
+## Callbacks
+
+1. validForm()
+2. invalidForm()
 
 ## Contribution
 Feel free to contribute. Open a new [issue](https://github.com/ozgrozer/recassfov/issues), or make a [pull request](https://github.com/ozgrozer/recassfov/pulls).
