@@ -73,6 +73,21 @@ Build your form.
 </Form>
 ```
 
+Add `.is-invalid` and `.invalid-feedback` classes into your CSS.
+
+```css
+.is-invalid {
+  border: 1px solid #dc3545;
+}
+.invalid-feedback {
+  display: none;
+  color: #dc3545;
+}
+.is-invalid~.invalid-feedback {
+  display: block;
+}
+```
+
 ## Callbacks
 
 1. validForm()

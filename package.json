@@ -1,10 +1,10 @@
 {
   "name": "recassfov",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "React Client and Server Side Form Validation",
   "main": "./npm/Recassfov.js",
   "scripts": {
-    "dev": "parcel ./example/index.html --out-dir ./dist --public-url /",
+    "start": "parcel ./example/index.html --out-dir ./dist --public-url /",
     "build": "babel --plugins transform-react-jsx ./src/Recassfov.jsx > ./npm/Recassfov.js"
   },
   "license": "MIT",
