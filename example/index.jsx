@@ -41,7 +41,7 @@ class App extends React.Component {
       <Form
         validForm={this.validForm.bind(this)}
         invalidForm={this.invalidForm.bind(this)}
-        postUrl='http://localhost/post.php'
+        postUrl='https://runkit.io/ozgrozer/recassfov-backend-demo/branches/master/signup'
       >
         <h2>Sign up</h2>
 

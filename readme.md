@@ -48,9 +48,7 @@ const validations = {
 Build your form.
 
 ```jsx
-<Form
-  postUrl='http://example.com/post.php'
->
+<Form postUrl='http://site.com/post'>
   <div>
     <Input
       type='text'
@@ -88,6 +86,22 @@ Add `.is-invalid` and `.invalid-feedback` classes into your CSS.
 .is-invalid~.invalid-feedback {
   display: block;
 }
+```
+
+Make sure you add the errors to the `validations` object in backend.
+
+```js
+app.post('/signup', (req, res) => {
+  const result = {
+    validations: {}
+  }
+
+  if (req.body.username === 'john') {
+    result.validations.username = 'john is already registered'
+  }
+
+  res.send(result)
+})
 ```
 
 ## Callbacks
