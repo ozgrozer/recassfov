@@ -37,7 +37,7 @@ class Provider extends React.Component {
     const formItems = this.state.formItems
 
     if (item.type === 'checkbox') {
-      formItems[item.name].value = !this.state.formItems[item.name]
+      formItems[item.name].value = !formItems[item.name].value
     } else {
       formItems[item.name].value = item.value
     }
