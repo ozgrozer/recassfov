@@ -1,8 +1,21 @@
 {
   "name": "recassfov",
-  "version": "0.0.20",
-  "description": "React Client and Server Side Form Validation",
+  "version": "0.0.21",
+  "description": "React client and server side form validation",
   "main": "./build/Recassfov.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozgrozer/recassfov.git"
+  },
+  "author": {
+    "name": "Ozgur Ozer",
+    "email": "ozgr@live.com",
+    "url": "https://github.com/ozgrozer"
+  },
+  "keywords": [
+    "react",
+    "form-validation"
+  ],
   "scripts": {
     "start": "parcel ./example/index.html --out-dir ./dist --public-url / --port 1111",
     "build": "npm run build-1 && npm run build-2",
