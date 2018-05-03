@@ -129,7 +129,7 @@ var Provider = function (_React$Component) {
             data: (0, _objectToUrlEncoded2.default)(_formItems),
             headers: { 'content-type': 'application/x-www-form-urlencoded' }
           }).then(function (res) {
-            var validations = res.data.validations | {};
+            var validations = res.data.validations || {};
 
             if (Object.keys(validations).length) {
               if (invalidFormAfterPost) {

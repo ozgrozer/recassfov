@@ -98,7 +98,7 @@ class Provider extends React.Component {
           headers: { 'content-type': 'application/x-www-form-urlencoded' }
         })
           .then((res) => {
-            const validations = res.data.validations | {}
+            const validations = res.data.validations || {}
 
             if (Object.keys(validations).length) {
               if (invalidFormAfterPost) {
