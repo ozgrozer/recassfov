@@ -83,7 +83,7 @@ var Provider = function (_React$Component) {
     }
   }, {
     key: 'onSubmit',
-    value: function onSubmit(_onSubmit, validForm, invalidForm, postUrl, e) {
+    value: function onSubmit(_onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, e) {
       var _this2 = this;
 
       e.preventDefault();
@@ -91,11 +91,12 @@ var Provider = function (_React$Component) {
       if (_onSubmit) _onSubmit();
 
       var formItems = this.state.formItems;
-
+      var formItemsValues = {};
       var howManyOfFormItemsAreValidated = 0;
 
       Object.keys(formItems).map(function (itemName) {
         var item = formItems[itemName];
+        formItemsValues[itemName] = item.value;
 
         item.validations.map(function (validation) {
           var validate = _validator2.default[validation.rule](item.value, validation.args);
@@ -110,38 +111,58 @@ var Provider = function (_React$Component) {
       this.setState({ formItems: formItems });
 
       if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
-        var _formItems = Object.keys(formItems).reduce(function (previous, current) {
-          previous[current] = formItems[current].value;
-          return previous;
-        }, {});
-
-        if (validForm) validForm(_formItems);
+        if (validFormBeforePost) {
+          validFormBeforePost({
+            formItems: formItemsValues
+          });
+        }
 
         if (postUrl) {
+          var _formItems = Object.keys(formItems).reduce(function (previous, current) {
+            previous[current] = formItems[current].value;
+            return previous;
+          }, {});
+
           (0, _axios2.default)({
             method: 'post',
             url: postUrl,
             data: (0, _objectToUrlEncoded2.default)(_formItems),
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            }
+            headers: { 'content-type': 'application/x-www-form-urlencoded' }
           }).then(function (res) {
             var validations = res.data.validations;
 
             if (Object.keys(validations).length) {
+              if (invalidFormAfterPost) {
+                invalidFormAfterPost({
+                  formItems: formItemsValues,
+                  ajaxData: res.data
+                });
+              }
+
               Object.keys(validations).map(function (itemName) {
                 formItems[itemName].invalidFeedback = validations[itemName];
                 formItems[itemName].className = ' is-invalid';
               });
 
               _this2.setState({ formItems: formItems });
+            } else {
+              if (validFormAfterPost) {
+                validFormAfterPost({
+                  formItems: formItemsValues,
+                  ajaxData: res.data
+                });
+              }
             }
           }).catch(function (err) {
             console.log(err);
           });
         }
       } else {
-        if (invalidForm) invalidForm();
+        if (invalidFormBeforePost) {
+          invalidFormBeforePost({
+            formItems: formItemsValues
+          });
+        }
       }
     }
   }, {
@@ -181,7 +202,7 @@ var Form = function (_React$Component2) {
         'form',
         {
           noValidate: true,
-          onSubmit: this.props.store.onSubmit.bind(this, this.props.onSubmit, this.props.validForm, this.props.invalidForm, this.props.postUrl)
+          onSubmit: this.props.store.onSubmit.bind(this, this.props.onSubmit, this.props.validFormBeforePost, this.props.invalidFormBeforePost, this.props.validFormAfterPost, this.props.invalidFormAfterPost, this.props.postUrl)
         },
         this.props.children
       );

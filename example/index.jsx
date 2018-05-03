@@ -27,30 +27,54 @@ const validations = {
 }
 
 class App extends React.Component {
-  validForm (formItems) {
-    console.log('validForm')
-    console.log(formItems)
+  onSubmit () {
+    console.log('onSubmit')
   }
 
-  invalidForm () {
-    console.log('invalidForm')
+  validFormBeforePost (res) {
+    console.log('validFormBeforePost')
+    console.log(res.formItems)
+  }
+
+  invalidFormBeforePost (res) {
+    console.log('invalidFormBeforePost')
+    console.log(res.formItems)
+  }
+
+  validFormAfterPost (res) {
+    console.log('validFormAfterPost')
+    console.log(res.formItems)
+    console.log(res.ajaxData)
+  }
+
+  invalidFormAfterPost (res) {
+    console.log('invalidFormAfterPost')
+    console.log(res.formItems)
+    console.log(res.ajaxData)
   }
 
   render () {
     return (
       <Form
-        validForm={this.validForm.bind(this)}
-        invalidForm={this.invalidForm.bind(this)}
+        onSubmit={this.onSubmit}
+        validFormBeforePost={this.validFormBeforePost}
+        invalidFormBeforePost={this.invalidFormBeforePost}
+        validFormAfterPost={this.validFormAfterPost}
+        invalidFormAfterPost={this.invalidFormAfterPost}
         postUrl='https://runkit.io/ozgrozer/recassfov-backend-demo/branches/master/signup'
       >
-        <h2>Sign up</h2>
+        <h2>demo form</h2>
+
+        <ul>
+          <li>type "john" into username to see backend error</li>
+          <li>watch for console</li>
+        </ul>
 
         <div>
           <Input
             type='text'
             name='username'
             placeholder='username'
-            value='john'
             validations={validations.username}
           />
         </div>
@@ -60,7 +84,6 @@ class App extends React.Component {
             type='email'
             name='email'
             placeholder='email'
-            value='john@doe.com'
             validations={validations.email}
           />
         </div>
@@ -70,7 +93,6 @@ class App extends React.Component {
             type='password'
             name='password'
             placeholder='password'
-            value='1234'
             validations={validations.password}
           />
         </div>

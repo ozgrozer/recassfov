@@ -45,17 +45,26 @@ class Provider extends React.Component {
     this.setState({ formItems })
   }
 
-  onSubmit (onSubmit, validForm, invalidForm, postUrl, e) {
+  onSubmit (
+    onSubmit,
+    validFormBeforePost,
+    invalidFormBeforePost,
+    validFormAfterPost,
+    invalidFormAfterPost,
+    postUrl,
+    e
+  ) {
     e.preventDefault()
 
     if (onSubmit) onSubmit()
 
     const formItems = this.state.formItems
-
+    let formItemsValues = {}
     let howManyOfFormItemsAreValidated = 0
 
     Object.keys(formItems).map((itemName) => {
       const item = formItems[itemName]
+      formItemsValues[itemName] = item.value
 
       item.validations.map((validation) => {
         const validate = validator[validation.rule](item.value, validation.args)
@@ -70,32 +79,48 @@ class Provider extends React.Component {
     this.setState({ formItems })
 
     if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
-      const _formItems = Object.keys(formItems).reduce((previous, current) => {
-        previous[current] = formItems[current].value
-        return previous
-      }, {})
-
-      if (validForm) validForm(_formItems)
+      if (validFormBeforePost) {
+        validFormBeforePost({
+          formItems: formItemsValues
+        })
+      }
 
       if (postUrl) {
+        const _formItems = Object.keys(formItems).reduce((previous, current) => {
+          previous[current] = formItems[current].value
+          return previous
+        }, {})
+
         axios({
           method: 'post',
           url: postUrl,
           data: objectToUrlEncoded(_formItems),
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded'
-          }
+          headers: { 'content-type': 'application/x-www-form-urlencoded' }
         })
           .then((res) => {
             const validations = res.data.validations
 
             if (Object.keys(validations).length) {
+              if (invalidFormAfterPost) {
+                invalidFormAfterPost({
+                  formItems: formItemsValues,
+                  ajaxData: res.data
+                })
+              }
+
               Object.keys(validations).map((itemName) => {
                 formItems[itemName].invalidFeedback = validations[itemName]
                 formItems[itemName].className = ' is-invalid'
               })
 
               this.setState({ formItems })
+            } else {
+              if (validFormAfterPost) {
+                validFormAfterPost({
+                  formItems: formItemsValues,
+                  ajaxData: res.data
+                })
+              }
             }
           })
           .catch((err) => {
@@ -103,7 +128,11 @@ class Provider extends React.Component {
           })
       }
     } else {
-      if (invalidForm) invalidForm()
+      if (invalidFormBeforePost) {
+        invalidFormBeforePost({
+          formItems: formItemsValues
+        })
+      }
     }
   }
 
@@ -132,8 +161,10 @@ class Form extends React.Component {
           this.props.store.onSubmit.bind(
             this,
             this.props.onSubmit,
-            this.props.validForm,
-            this.props.invalidForm,
+            this.props.validFormBeforePost,
+            this.props.invalidFormBeforePost,
+            this.props.validFormAfterPost,
+            this.props.invalidFormAfterPost,
             this.props.postUrl
           )
         }

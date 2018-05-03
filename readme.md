@@ -5,7 +5,7 @@
 
 **Re**act **C**lient **a**nd **S**erver **S**ide **Fo**rm **V**alidation
 
-[Demo](https://z3j2o35pjm.codesandbox.io/)
+[Demo](https://codesandbox.io/s/z3j2o35pjm)
 
 ## Usage
 
@@ -106,8 +106,15 @@ app.post('/signup', (req, res) => {
 
 ## Callbacks
 
-1. validForm()
-2. invalidForm()
+```jsx
+<Form
+  onSubmit={this.onSubmit}
+  validFormBeforePost={this.validFormBeforePost}
+  invalidFormBeforePost={this.invalidFormBeforePost}
+  validFormAfterPost={this.validFormAfterPost}
+  invalidFormAfterPost={this.invalidFormAfterPost}
+>
+```
 
 ## Contribution
 Feel free to contribute. Open a new [issue](https://github.com/ozgrozer/recassfov/issues), or make a [pull request](https://github.com/ozgrozer/recassfov/pulls).
