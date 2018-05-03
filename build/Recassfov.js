@@ -144,7 +144,7 @@ var Provider = function (_React$Component) {
               if (invalidFormAfterPost) {
                 invalidFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxData: res.data
+                  ajaxResult: res.data
                 });
               }
 
@@ -158,7 +158,7 @@ var Provider = function (_React$Component) {
               if (validFormAfterPost) {
                 validFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxData: res.data
+                  ajaxResult: res.data
                 });
               }
             }

@@ -124,11 +124,23 @@ Callbacks
 
 ```jsx
 <Form
-  onSubmit={this.onSubmit}
-  validFormBeforePost={this.validFormBeforePost}
-  invalidFormBeforePost={this.invalidFormBeforePost}
-  validFormAfterPost={this.validFormAfterPost}
-  invalidFormAfterPost={this.invalidFormAfterPost}
+  onSubmit={() => {
+    console.log('onSubmit')
+  }}
+  validFormBeforePost={(res) => {
+    console.log(res.formItems)
+  }}
+  invalidFormBeforePost={(res) => {
+    console.log(res.formItems)
+  }}
+  validFormAfterPost={(res) => {
+    console.log(res.formItems)
+    console.log(res.ajaxResult)
+  }}
+  invalidFormAfterPost={(res) => {
+    console.log(res.formItems)
+    console.log(res.ajaxResult)
+  }}
 >
 ```
 

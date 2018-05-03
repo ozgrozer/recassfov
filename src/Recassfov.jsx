@@ -112,7 +112,7 @@ class Provider extends React.Component {
               if (invalidFormAfterPost) {
                 invalidFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxData: res.data
+                  ajaxResult: res.data
                 })
               }
 
@@ -126,7 +126,7 @@ class Provider extends React.Component {
               if (validFormAfterPost) {
                 validFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxData: res.data
+                  ajaxResult: res.data
                 })
               }
             }

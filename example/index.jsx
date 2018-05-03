@@ -44,13 +44,13 @@ class App extends React.Component {
   validFormAfterPost (res) {
     console.log('validFormAfterPost')
     console.log(res.formItems)
-    console.log(res.ajaxData)
+    console.log(res.ajaxResult)
   }
 
   invalidFormAfterPost (res) {
     console.log('invalidFormAfterPost')
     console.log(res.formItems)
-    console.log(res.ajaxData)
+    console.log(res.ajaxResult)
   }
 
   render () {
