@@ -104,7 +104,23 @@ app.post('/signup', (req, res) => {
 })
 ```
 
-## Callbacks
+## Props & Callbacks
+
+**`<Form>`**
+
+Props
+
+```jsx
+<Form
+  postUrl='http://site.com.post'
+  classNames={{
+    invalidInput: 'is-invalid',
+    invalidFeedback: 'invalid-feedback'
+  }}
+>
+```
+
+Callbacks
 
 ```jsx
 <Form

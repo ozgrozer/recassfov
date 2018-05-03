@@ -62,6 +62,10 @@ class App extends React.Component {
         validFormAfterPost={this.validFormAfterPost}
         invalidFormAfterPost={this.invalidFormAfterPost}
         postUrl='https://runkit.io/ozgrozer/recassfov-backend-demo/branches/master/signup'
+        classNames={{
+          invalidInput: 'is-invalid',
+          invalidFeedback: 'invalid-feedback'
+        }}
       >
         <h2>demo form</h2>
 

@@ -12,13 +12,15 @@ class Provider extends React.Component {
     this.state = {
       formItems: {},
       totalValidations: 0,
-      invalidInputClassName: 'is-invalid',
-      invalidFeedbackClassName: 'invalid-feedback'
+      classNames: {
+        invalidInput: 'is-invalid',
+        invalidFeedback: 'invalid-feedback'
+      }
     }
   }
 
-  setAnyState (state, value) {
-    this.setState({ [state]: value })
+  setClassNames (classNames) {
+    this.setState({ classNames })
   }
 
   setFormItem (item) {
@@ -78,7 +80,7 @@ class Provider extends React.Component {
         if (validate) howManyOfFormItemsAreValidated++
 
         item.invalidFeedback = validation.invalidFeedback
-        item.className = validate ? '' : ` ${this.state.invalidInputClassName}`
+        item.className = validate ? '' : ` ${this.state.classNames.invalidInput}`
       })
     })
 
@@ -116,7 +118,7 @@ class Provider extends React.Component {
 
               Object.keys(validations).map((itemName) => {
                 formItems[itemName].invalidFeedback = validations[itemName]
-                formItems[itemName].className = ` ${this.state.invalidInputClassName}`
+                formItems[itemName].className = ` ${this.state.classNames.invalidInput}`
               })
 
               this.setState({ formItems })
@@ -145,7 +147,7 @@ class Provider extends React.Component {
   render () {
     const store = {
       state: this.state,
-      setAnyState: this.setAnyState.bind(this),
+      setClassNames: this.setClassNames.bind(this),
       setFormItem: this.setFormItem.bind(this),
       handleInput: this.handleInput.bind(this),
       onSubmit: this.onSubmit.bind(this)
@@ -162,11 +164,8 @@ class Provider extends React.Component {
 class Form extends React.Component {
   constructor (props) {
     super(props)
-    if (this.props.invalidInputClassName) {
-      this.props.store.setAnyState('invalidInputClassName', this.props.invalidInputClassName)
-    }
-    if (this.props.invalidFeedbackClassName) {
-      this.props.store.setAnyState('invalidFeedbackClassName', this.props.invalidFeedbackClassName)
+    if (this.props.classNames) {
+      this.props.store.setClassNames(this.props.classNames)
     }
   }
 
@@ -179,8 +178,7 @@ class Form extends React.Component {
       validFormAfterPost,
       invalidFormAfterPost,
       postUrl,
-      invalidInputClassName,
-      invalidFeedbackClassName,
+      classNames,
       ...otherProps
     } = this.props
 
@@ -225,7 +223,7 @@ class Input extends React.Component {
           value={thisItem.value}
         />
 
-        <div className={store.state.invalidFeedbackClassName}>{thisItem.invalidFeedback}</div>
+        <div className={store.state.classNames.invalidFeedback}>{thisItem.invalidFeedback}</div>
       </React.Fragment>
     )
   }
