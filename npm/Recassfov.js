@@ -4,8 +4,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -18,6 +16,10 @@ var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _objectToUrlEncoded = require('./objectToUrlEncoded');
+
+var _objectToUrlEncoded2 = _interopRequireDefault(_objectToUrlEncoded);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -27,18 +29,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var objectToUrlEncoded = function objectToUrlEncoded(element, key, list) {
-  list = list || [];
-  if ((typeof element === 'undefined' ? 'undefined' : _typeof(element)) === 'object') {
-    for (var idx in element) {
-      objectToUrlEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list);
-    }
-  } else {
-    list.push(key + '=' + encodeURIComponent(element));
-  }
-  return list.join('&');
-};
 
 var Context = _react2.default.createContext();
 
@@ -65,7 +55,7 @@ var Provider = function (_React$Component) {
       formItems[item.name] = {
         value: item.value || '',
         validations: item.validations || [],
-        invalidFeedback: item.validations[0].invalidFeedback || '',
+        invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
         className: ''
       };
 
@@ -73,7 +63,7 @@ var Provider = function (_React$Component) {
 
       this.setState(function (prevState) {
         return {
-          totalValidations: prevState.totalValidations + item.validations.length
+          totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
         };
       });
     }
@@ -84,7 +74,7 @@ var Provider = function (_React$Component) {
       var formItems = this.state.formItems;
 
       if (item.type === 'checkbox') {
-        formItems[item.name].value = !this.state.formItems[item.name];
+        formItems[item.name].value = !formItems[item.name].value;
       } else {
         formItems[item.name].value = item.value;
       }
@@ -131,7 +121,7 @@ var Provider = function (_React$Component) {
           (0, _axios2.default)({
             method: 'post',
             url: postUrl,
-            data: objectToUrlEncoded(_formItems),
+            data: (0, _objectToUrlEncoded2.default)(_formItems),
             headers: {
               'content-type': 'application/x-www-form-urlencoded'
             }
