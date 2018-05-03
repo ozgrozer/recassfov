@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Form, Input, InvalidFeedback } from './../src/Recassfov'
+import { Form, Input } from './../src/Recassfov'
 
 const validations = {
   username: [
