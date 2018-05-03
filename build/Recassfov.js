@@ -24,6 +24,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -42,12 +44,19 @@ var Provider = function (_React$Component) {
 
     _this.state = {
       formItems: {},
-      totalValidations: 0
+      totalValidations: 0,
+      invalidInputClassName: 'is-invalid',
+      invalidFeedbackClassName: 'invalid-feedback'
     };
     return _this;
   }
 
   _createClass(Provider, [{
+    key: 'setAnyState',
+    value: function setAnyState(state, value) {
+      this.setState(_defineProperty({}, state, value));
+    }
+  }, {
     key: 'setFormItem',
     value: function setFormItem(item) {
       var formItems = this.state.formItems;
@@ -104,7 +113,7 @@ var Provider = function (_React$Component) {
           if (validate) howManyOfFormItemsAreValidated++;
 
           item.invalidFeedback = validation.invalidFeedback;
-          item.className = validate ? '' : ' is-invalid';
+          item.className = validate ? '' : ' ' + _this2.state.invalidInputClassName;
         });
       });
 
@@ -141,7 +150,7 @@ var Provider = function (_React$Component) {
 
               Object.keys(validations).map(function (itemName) {
                 formItems[itemName].invalidFeedback = validations[itemName];
-                formItems[itemName].className = ' is-invalid';
+                formItems[itemName].className = ' ' + _this2.state.invalidInputClassName;
               });
 
               _this2.setState({ formItems: formItems });
@@ -170,6 +179,7 @@ var Provider = function (_React$Component) {
     value: function render() {
       var store = {
         state: this.state,
+        setAnyState: this.setAnyState.bind(this),
         setFormItem: this.setFormItem.bind(this),
         handleInput: this.handleInput.bind(this),
         onSubmit: this.onSubmit.bind(this)
@@ -189,21 +199,41 @@ var Provider = function (_React$Component) {
 var Form = function (_React$Component2) {
   _inherits(Form, _React$Component2);
 
-  function Form() {
+  function Form(props) {
     _classCallCheck(this, Form);
 
-    return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+    var _this3 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+    if (_this3.props.invalidInputClassName) {
+      _this3.props.store.setAnyState('invalidInputClassName', _this3.props.invalidInputClassName);
+    }
+    if (_this3.props.invalidFeedbackClassName) {
+      _this3.props.store.setAnyState('invalidFeedbackClassName', _this3.props.invalidFeedbackClassName);
+    }
+    return _this3;
   }
 
   _createClass(Form, [{
     key: 'render',
     value: function render() {
+      var _props = this.props,
+          store = _props.store,
+          onSubmit = _props.onSubmit,
+          validFormBeforePost = _props.validFormBeforePost,
+          invalidFormBeforePost = _props.invalidFormBeforePost,
+          validFormAfterPost = _props.validFormAfterPost,
+          invalidFormAfterPost = _props.invalidFormAfterPost,
+          postUrl = _props.postUrl,
+          invalidInputClassName = _props.invalidInputClassName,
+          invalidFeedbackClassName = _props.invalidFeedbackClassName,
+          otherProps = _objectWithoutProperties(_props, ['store', 'onSubmit', 'validFormBeforePost', 'invalidFormBeforePost', 'validFormAfterPost', 'invalidFormAfterPost', 'postUrl', 'invalidInputClassName', 'invalidFeedbackClassName']);
+
       return _react2.default.createElement(
         'form',
-        {
+        _extends({}, otherProps, {
           noValidate: true,
-          onSubmit: this.props.store.onSubmit.bind(this, this.props.onSubmit, this.props.validFormBeforePost, this.props.invalidFormBeforePost, this.props.validFormAfterPost, this.props.invalidFormAfterPost, this.props.postUrl)
-        },
+          onSubmit: this.props.store.onSubmit.bind(this, onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl)
+        }),
         this.props.children
       );
     }
@@ -227,11 +257,11 @@ var Input = function (_React$Component3) {
   _createClass(Input, [{
     key: 'render',
     value: function render() {
-      var _props = this.props,
-          validations = _props.validations,
-          store = _props.store,
-          className = _props.className,
-          otherProps = _objectWithoutProperties(_props, ['validations', 'store', 'className']);
+      var _props2 = this.props,
+          store = _props2.store,
+          validations = _props2.validations,
+          className = _props2.className,
+          otherProps = _objectWithoutProperties(_props2, ['store', 'validations', 'className']);
 
       var thisItem = store.state.formItems[this.props.name];
 
@@ -239,13 +269,13 @@ var Input = function (_React$Component3) {
         _react2.default.Fragment,
         null,
         _react2.default.createElement('input', _extends({}, otherProps, {
-          onChange: store.handleInput.bind(this),
+          onChange: store.handleInput,
           className: '' + (className || '') + thisItem.className,
           value: thisItem.value
         })),
         _react2.default.createElement(
           'div',
-          { className: 'invalid-feedback' },
+          { className: store.state.invalidFeedbackClassName },
           thisItem.invalidFeedback
         )
       );
@@ -267,10 +297,15 @@ var Select = function (_React$Component4) {
   _createClass(Select, [{
     key: 'render',
     value: function render() {
+      var _props3 = this.props,
+          store = _props3.store,
+          children = _props3.children,
+          otherProps = _objectWithoutProperties(_props3, ['store', 'children']);
+
       return _react2.default.createElement(
         'select',
-        _extends({}, this.props, { onChange: this.props.store.handleInput }),
-        this.props.children
+        _extends({}, otherProps, { onChange: store.handleInput }),
+        children
       );
     }
   }]);

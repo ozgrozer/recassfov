@@ -11,8 +11,14 @@ class Provider extends React.Component {
     super()
     this.state = {
       formItems: {},
-      totalValidations: 0
+      totalValidations: 0,
+      invalidInputClassName: 'is-invalid',
+      invalidFeedbackClassName: 'invalid-feedback'
     }
+  }
+
+  setAnyState (state, value) {
+    this.setState({ [state]: value })
   }
 
   setFormItem (item) {
@@ -72,7 +78,7 @@ class Provider extends React.Component {
         if (validate) howManyOfFormItemsAreValidated++
 
         item.invalidFeedback = validation.invalidFeedback
-        item.className = validate ? '' : ' is-invalid'
+        item.className = validate ? '' : ` ${this.state.invalidInputClassName}`
       })
     })
 
@@ -110,7 +116,7 @@ class Provider extends React.Component {
 
               Object.keys(validations).map((itemName) => {
                 formItems[itemName].invalidFeedback = validations[itemName]
-                formItems[itemName].className = ' is-invalid'
+                formItems[itemName].className = ` ${this.state.invalidInputClassName}`
               })
 
               this.setState({ formItems })
@@ -139,6 +145,7 @@ class Provider extends React.Component {
   render () {
     const store = {
       state: this.state,
+      setAnyState: this.setAnyState.bind(this),
       setFormItem: this.setFormItem.bind(this),
       handleInput: this.handleInput.bind(this),
       onSubmit: this.onSubmit.bind(this)
@@ -153,19 +160,43 @@ class Provider extends React.Component {
 }
 
 class Form extends React.Component {
+  constructor (props) {
+    super(props)
+    if (this.props.invalidInputClassName) {
+      this.props.store.setAnyState('invalidInputClassName', this.props.invalidInputClassName)
+    }
+    if (this.props.invalidFeedbackClassName) {
+      this.props.store.setAnyState('invalidFeedbackClassName', this.props.invalidFeedbackClassName)
+    }
+  }
+
   render () {
+    const {
+      store,
+      onSubmit,
+      validFormBeforePost,
+      invalidFormBeforePost,
+      validFormAfterPost,
+      invalidFormAfterPost,
+      postUrl,
+      invalidInputClassName,
+      invalidFeedbackClassName,
+      ...otherProps
+    } = this.props
+
     return (
       <form
+        {...otherProps}
         noValidate
         onSubmit={
           this.props.store.onSubmit.bind(
             this,
-            this.props.onSubmit,
-            this.props.validFormBeforePost,
-            this.props.invalidFormBeforePost,
-            this.props.validFormAfterPost,
-            this.props.invalidFormAfterPost,
-            this.props.postUrl
+            onSubmit,
+            validFormBeforePost,
+            invalidFormBeforePost,
+            validFormAfterPost,
+            invalidFormAfterPost,
+            postUrl
           )
         }
       >
@@ -182,19 +213,19 @@ class Input extends React.Component {
   }
 
   render () {
-    const { validations, store, className, ...otherProps } = this.props
+    const { store, validations, className, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
 
     return (
       <React.Fragment>
         <input
           {...otherProps}
-          onChange={store.handleInput.bind(this)}
+          onChange={store.handleInput}
           className={`${className || ''}${thisItem.className}`}
           value={thisItem.value}
         />
 
-        <div className='invalid-feedback'>{thisItem.invalidFeedback}</div>
+        <div className={store.state.invalidFeedbackClassName}>{thisItem.invalidFeedback}</div>
       </React.Fragment>
     )
   }
@@ -202,9 +233,11 @@ class Input extends React.Component {
 
 class Select extends React.Component {
   render () {
+    const { store, children, ...otherProps } = this.props
+
     return (
-      <select {...this.props} onChange={this.props.store.handleInput}>
-        {this.props.children}
+      <select {...otherProps} onChange={store.handleInput}>
+        {children}
       </select>
     )
   }
