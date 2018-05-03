@@ -2,17 +2,7 @@ import React from 'react'
 import validator from 'validator'
 import axios from 'axios'
 
-const objectToUrlEncoded = (element, key, list) => {
-  list = list || []
-  if (typeof element === 'object') {
-    for (let idx in element) {
-      objectToUrlEncoded(element[idx], key ? key + '[' + idx + ']' : idx, list)
-    }
-  } else {
-    list.push(key + '=' + encodeURIComponent(element))
-  }
-  return list.join('&')
-}
+import objectToUrlEncoded from './objectToUrlEncoded'
 
 const Context = React.createContext()
 
@@ -31,14 +21,14 @@ class Provider extends React.Component {
     formItems[item.name] = {
       value: item.value || '',
       validations: item.validations || [],
-      invalidFeedback: item.validations[0].invalidFeedback || '',
+      invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
       className: ''
     }
 
     this.setState({ formItems })
 
     this.setState((prevState) => ({
-      totalValidations: prevState.totalValidations + item.validations.length
+      totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
     }))
   }
 

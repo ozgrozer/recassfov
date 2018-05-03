@@ -76,6 +76,14 @@ class App extends React.Component {
         </div>
 
         <div>
+          <Input
+            type='checkbox'
+            name='rememberMe'
+            placeholder='remember me'
+          />
+        </div>
+
+        <div>
           <input type='submit' value='submit' />
         </div>
       </Form>
