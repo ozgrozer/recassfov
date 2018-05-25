@@ -229,6 +229,33 @@ class Input extends React.Component {
   }
 }
 
+class Textarea extends React.Component {
+  constructor (props) {
+    super(props)
+    this.props.store.setFormItem(this.props)
+  }
+
+  render () {
+    const { store, validations, className, ...otherProps } = this.props
+    const thisItem = store.state.formItems[this.props.name]
+
+    return (
+      <React.Fragment>
+        <textarea
+          {...otherProps}
+          onChange={store.handleInput}
+          className={`${className || ''}${thisItem.className}`}
+          value={thisItem.value}
+          >
+          {this.props.children}
+        </textarea>
+
+        <div className={store.state.classNames.invalidFeedback}>{thisItem.invalidFeedback}</div>
+      </React.Fragment>
+    )
+  }
+}
+
 class Select extends React.Component {
   render () {
     const { store, children, ...otherProps } = this.props
@@ -261,4 +288,5 @@ const connectConsumer = (Component) => {
 
 module.exports.Form = connectProvider(Form)
 module.exports.Input = connectConsumer(Input)
+module.exports.Textarea = connectConsumer(Textarea)
 module.exports.Select = connectConsumer(Select)

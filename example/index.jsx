@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Form, Input } from './../src/Recassfov'
+import { Form, Input, Textarea } from './../src/Recassfov'
 
 const validations = {
   username: [
@@ -22,6 +22,13 @@ const validations = {
       rule: 'isLength',
       args: { min: 4, max: 32 },
       invalidFeedback: 'please provide a password (min: 4, max: 32)'
+    }
+  ],
+  message: [
+    {
+      rule: 'isLength',
+      args: { min: 1 },
+      invalidFeedback: 'please provide a message'
     }
   ]
 }
@@ -66,7 +73,7 @@ class App extends React.Component {
           invalidInput: 'is-invalid',
           invalidFeedback: 'invalid-feedback'
         }}
-      >
+        >
         <h2>demo form</h2>
 
         <ul>
@@ -80,7 +87,7 @@ class App extends React.Component {
             name='username'
             placeholder='username'
             validations={validations.username}
-          />
+            />
         </div>
 
         <div>
@@ -89,7 +96,7 @@ class App extends React.Component {
             name='email'
             placeholder='email'
             validations={validations.email}
-          />
+            />
         </div>
 
         <div>
@@ -98,15 +105,15 @@ class App extends React.Component {
             name='password'
             placeholder='password'
             validations={validations.password}
-          />
+            />
         </div>
 
         <div>
-          <Input
-            type='checkbox'
-            name='rememberMe'
-            placeholder='remember me'
-          />
+          <Textarea
+            name='message'
+            placeholder='message'
+            validations={validations.message}
+            />
         </div>
 
         <div>

@@ -281,8 +281,55 @@ var Input = function (_React$Component3) {
   return Input;
 }(_react2.default.Component);
 
-var Select = function (_React$Component4) {
-  _inherits(Select, _React$Component4);
+var Textarea = function (_React$Component4) {
+  _inherits(Textarea, _React$Component4);
+
+  function Textarea(props) {
+    _classCallCheck(this, Textarea);
+
+    var _this5 = _possibleConstructorReturn(this, (Textarea.__proto__ || Object.getPrototypeOf(Textarea)).call(this, props));
+
+    _this5.props.store.setFormItem(_this5.props);
+    return _this5;
+  }
+
+  _createClass(Textarea, [{
+    key: 'render',
+    value: function render() {
+      var _props3 = this.props,
+          store = _props3.store,
+          validations = _props3.validations,
+          className = _props3.className,
+          otherProps = _objectWithoutProperties(_props3, ['store', 'validations', 'className']);
+
+      var thisItem = store.state.formItems[this.props.name];
+
+      return _react2.default.createElement(
+        _react2.default.Fragment,
+        null,
+        _react2.default.createElement(
+          'textarea',
+          _extends({}, otherProps, {
+            onChange: store.handleInput,
+            className: '' + (className || '') + thisItem.className,
+            value: thisItem.value
+          }),
+          this.props.children
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: store.state.classNames.invalidFeedback },
+          thisItem.invalidFeedback
+        )
+      );
+    }
+  }]);
+
+  return Textarea;
+}(_react2.default.Component);
+
+var Select = function (_React$Component5) {
+  _inherits(Select, _React$Component5);
 
   function Select() {
     _classCallCheck(this, Select);
@@ -293,10 +340,10 @@ var Select = function (_React$Component4) {
   _createClass(Select, [{
     key: 'render',
     value: function render() {
-      var _props3 = this.props,
-          store = _props3.store,
-          children = _props3.children,
-          otherProps = _objectWithoutProperties(_props3, ['store', 'children']);
+      var _props4 = this.props,
+          store = _props4.store,
+          children = _props4.children,
+          otherProps = _objectWithoutProperties(_props4, ['store', 'children']);
 
       return _react2.default.createElement(
         'select',
@@ -339,5 +386,6 @@ var connectConsumer = function connectConsumer(Component) {
 
 module.exports.Form = connectProvider(Form);
 module.exports.Input = connectConsumer(Input);
+module.exports.Textarea = connectConsumer(Textarea);
 module.exports.Select = connectConsumer(Select);
 
