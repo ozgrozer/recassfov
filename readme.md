@@ -41,6 +41,13 @@ const validations = {
       rule: 'isEmail',
       invalidFeedback: 'please provide a valid email'
     }
+  ],
+  message: [
+    {
+      rule: 'isLength',
+      args: { min: 1 },
+      invalidFeedback: 'please provide a message'
+    }
   ]
 }
 ```
@@ -55,7 +62,7 @@ Build your form.
       name='username'
       placeholder='username'
       validations={validations.username}
-    />
+      />
   </div>
 
   <div>
@@ -64,7 +71,15 @@ Build your form.
       name='email'
       placeholder='email'
       validations={validations.email}
-    />
+      />
+  </div>
+
+  <div>
+    <Textarea
+      name='message'
+      placeholder='message'
+      validations={validations.message}
+      />
   </div>
 
   <div>
@@ -117,7 +132,7 @@ Props
     invalidInput: 'is-invalid',
     invalidFeedback: 'invalid-feedback'
   }}
->
+  >
 ```
 
 Callbacks
@@ -136,12 +151,13 @@ Callbacks
   validFormAfterPost={(res) => {
     console.log(res.formItems)
     console.log(res.ajaxResult)
+    res.cleanFormItems()
   }}
   invalidFormAfterPost={(res) => {
     console.log(res.formItems)
     console.log(res.ajaxResult)
   }}
->
+  >
 ```
 
 ## Contribution

@@ -52,6 +52,7 @@ class App extends React.Component {
     console.log('validFormAfterPost')
     console.log(res.formItems)
     console.log(res.ajaxResult)
+    res.cleanFormItems()
   }
 
   invalidFormAfterPost (res) {

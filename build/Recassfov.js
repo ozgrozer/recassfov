@@ -77,6 +77,17 @@ var Provider = function (_React$Component) {
       });
     }
   }, {
+    key: 'cleanFormItems',
+    value: function cleanFormItems() {
+      var formItems = this.state.formItems;
+
+      Object.keys(formItems).map(function (item) {
+        formItems[item].value = '';
+      });
+
+      this.setState({ formItems: formItems });
+    }
+  }, {
     key: 'handleInput',
     value: function handleInput(e) {
       var item = e.target;
@@ -133,10 +144,12 @@ var Provider = function (_React$Component) {
           }, {});
 
           (0, _axios2.default)({
-            method: 'post',
             url: postUrl,
+            method: 'post',
             data: (0, _objectToUrlEncoded2.default)(_formItems),
-            headers: { 'content-type': 'application/x-www-form-urlencoded' }
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            }
           }).then(function (res) {
             var validations = res.data.validations || {};
 
@@ -158,7 +171,8 @@ var Provider = function (_React$Component) {
               if (validFormAfterPost) {
                 validFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxResult: res.data
+                  ajaxResult: res.data,
+                  cleanFormItems: _this2.cleanFormItems.bind(_this2)
                 });
               }
             }

@@ -40,6 +40,16 @@ class Provider extends React.Component {
     }))
   }
 
+  cleanFormItems () {
+    const formItems = this.state.formItems
+
+    Object.keys(formItems).map((item) => {
+      formItems[item].value = ''
+    })
+
+    this.setState({ formItems })
+  }
+
   handleInput (e) {
     const item = e.target
     const formItems = this.state.formItems
@@ -100,10 +110,12 @@ class Provider extends React.Component {
         }, {})
 
         axios({
-          method: 'post',
           url: postUrl,
+          method: 'post',
           data: objectToUrlEncoded(_formItems),
-          headers: { 'content-type': 'application/x-www-form-urlencoded' }
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+          }
         })
           .then((res) => {
             const validations = res.data.validations || {}
@@ -126,7 +138,8 @@ class Provider extends React.Component {
               if (validFormAfterPost) {
                 validFormAfterPost({
                   formItems: formItemsValues,
-                  ajaxResult: res.data
+                  ajaxResult: res.data,
+                  cleanFormItems: this.cleanFormItems.bind(this)
                 })
               }
             }
@@ -197,7 +210,7 @@ class Form extends React.Component {
             postUrl
           )
         }
-      >
+        >
         {this.props.children}
       </form>
     )
@@ -221,7 +234,7 @@ class Input extends React.Component {
           onChange={store.handleInput}
           className={`${className || ''}${thisItem.className}`}
           value={thisItem.value}
-        />
+          />
 
         <div className={store.state.classNames.invalidFeedback}>{thisItem.invalidFeedback}</div>
       </React.Fragment>
