@@ -117,15 +117,25 @@ var Provider = function (_React$Component) {
       Object.keys(formItems).map(function (itemName) {
         var item = formItems[itemName];
         formItemsValues[itemName] = item.value;
+        var validationsLength = item.validations.length;
+        var validated = 0;
 
-        item.validations.map(function (validation) {
+        for (var i = 0; i < validationsLength; i++) {
+          var validation = item.validations[i];
           var validate = _validator2.default[validation.rule](item.value, validation.args);
 
-          if (validate) howManyOfFormItemsAreValidated++;
+          if (validate) {
+            validated++;
+            howManyOfFormItemsAreValidated++;
+          }
 
-          item.invalidFeedback = validation.invalidFeedback;
-          item.className = validate ? '' : ' ' + _this2.state.classNames.invalidInput;
-        });
+          item.className = validationsLength === validated ? '' : ' ' + _this2.state.classNames.invalidInput;
+
+          if (!validate) {
+            item.invalidFeedback = validation.invalidFeedback;
+            continue;
+          }
+        }
       });
 
       this.setState({ formItems: formItems });

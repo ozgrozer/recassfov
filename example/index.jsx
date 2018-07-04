@@ -24,6 +24,18 @@ const validations = {
       invalidFeedback: 'please provide a password (min: 4, max: 32)'
     }
   ],
+  number: [
+    {
+      rule: 'isInt',
+      args: { gt: 10, lt: 100 },
+      invalidFeedback: 'please provide a number between 10-100'
+    },
+    {
+      rule: 'isLength',
+      args: { min: 1 },
+      invalidFeedback: 'please provide at least one character'
+    }
+  ],
   message: [
     {
       rule: 'isLength',
@@ -106,6 +118,15 @@ class App extends React.Component {
             name='password'
             placeholder='password'
             validations={validations.password}
+            />
+        </div>
+
+        <div>
+          <Input
+            type='number'
+            name='number'
+            placeholder='number'
+            validations={validations.number}
             />
         </div>
 

@@ -83,15 +83,25 @@ class Provider extends React.Component {
     Object.keys(formItems).map((itemName) => {
       const item = formItems[itemName]
       formItemsValues[itemName] = item.value
+      const validationsLength = item.validations.length
+      let validated = 0
 
-      item.validations.map((validation) => {
+      for (let i = 0; i < validationsLength; i++) {
+        const validation = item.validations[i]
         const validate = validator[validation.rule](item.value, validation.args)
 
-        if (validate) howManyOfFormItemsAreValidated++
+        if (validate) {
+          validated++
+          howManyOfFormItemsAreValidated++
+        }
 
-        item.invalidFeedback = validation.invalidFeedback
-        item.className = validate ? '' : ` ${this.state.classNames.invalidInput}`
-      })
+        item.className = validationsLength === validated ? '' : ` ${this.state.classNames.invalidInput}`
+
+        if (!validate) {
+          item.invalidFeedback = validation.invalidFeedback
+          continue
+        }
+      }
     })
 
     this.setState({ formItems })
