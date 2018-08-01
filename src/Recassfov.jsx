@@ -70,6 +70,7 @@ class Provider extends React.Component {
     validFormAfterPost,
     invalidFormAfterPost,
     postUrl,
+    headers,
     e
   ) {
     e.preventDefault()
@@ -119,13 +120,18 @@ class Provider extends React.Component {
           return previous
         }, {})
 
+        headers = typeof headers === 'object' ? headers : {}
+        headers['Content-Type'] = headers.hasOwnProperty('Content-Type') ? headers['Content-Type'] : 'application/x-www-form-urlencoded'
+        const data = headers['Content-Type'] === 'application/x-www-form-urlencoded' ? objectToUrlEncoded(_formItems) : _formItems
+
+        console.log(_formItems)
+        console.log(headers)
+
         axios({
           url: postUrl,
           method: 'post',
-          data: objectToUrlEncoded(_formItems),
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded'
-          }
+          data,
+          headers
         })
           .then((res) => {
             const validations = res.data.validations || {}
@@ -201,6 +207,7 @@ class Form extends React.Component {
       validFormAfterPost,
       invalidFormAfterPost,
       postUrl,
+      headers,
       classNames,
       ...otherProps
     } = this.props
@@ -217,7 +224,8 @@ class Form extends React.Component {
             invalidFormBeforePost,
             validFormAfterPost,
             invalidFormAfterPost,
-            postUrl
+            postUrl,
+            headers
           )
         }
         >

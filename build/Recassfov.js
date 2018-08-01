@@ -2,6 +2,8 @@
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -103,7 +105,7 @@ var Provider = function (_React$Component) {
     }
   }, {
     key: 'onSubmit',
-    value: function onSubmit(_onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, e) {
+    value: function onSubmit(_onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers, e) {
       var _this2 = this;
 
       e.preventDefault();
@@ -153,13 +155,18 @@ var Provider = function (_React$Component) {
             return previous;
           }, {});
 
+          headers = (typeof headers === 'undefined' ? 'undefined' : _typeof(headers)) === 'object' ? headers : {};
+          headers['Content-Type'] = headers.hasOwnProperty('Content-Type') ? headers['Content-Type'] : 'application/x-www-form-urlencoded';
+          var data = headers['Content-Type'] === 'application/x-www-form-urlencoded' ? (0, _objectToUrlEncoded2.default)(_formItems) : _formItems;
+
+          console.log(_formItems);
+          console.log(headers);
+
           (0, _axios2.default)({
             url: postUrl,
             method: 'post',
-            data: (0, _objectToUrlEncoded2.default)(_formItems),
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            }
+            data: data,
+            headers: headers
           }).then(function (res) {
             var validations = res.data.validations || {};
 
@@ -245,14 +252,15 @@ var Form = function (_React$Component2) {
           validFormAfterPost = _props.validFormAfterPost,
           invalidFormAfterPost = _props.invalidFormAfterPost,
           postUrl = _props.postUrl,
+          headers = _props.headers,
           classNames = _props.classNames,
-          otherProps = _objectWithoutProperties(_props, ['store', 'onSubmit', 'validFormBeforePost', 'invalidFormBeforePost', 'validFormAfterPost', 'invalidFormAfterPost', 'postUrl', 'classNames']);
+          otherProps = _objectWithoutProperties(_props, ['store', 'onSubmit', 'validFormBeforePost', 'invalidFormBeforePost', 'validFormAfterPost', 'invalidFormAfterPost', 'postUrl', 'headers', 'classNames']);
 
       return _react2.default.createElement(
         'form',
         _extends({}, otherProps, {
           noValidate: true,
-          onSubmit: this.props.store.onSubmit.bind(this, onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl)
+          onSubmit: this.props.store.onSubmit.bind(this, onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers)
         }),
         this.props.children
       );

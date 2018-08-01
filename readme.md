@@ -128,6 +128,9 @@ Props
 ```jsx
 <Form
   postUrl='http://site.com.post'
+  headers={{
+    'Content-Type': 'application/json'
+  }}
   classNames={{
     invalidInput: 'is-invalid',
     invalidFeedback: 'invalid-feedback'
