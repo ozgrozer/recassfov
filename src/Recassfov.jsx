@@ -224,8 +224,7 @@ class Form extends React.Component {
             postUrl,
             headers
           )
-        }
-        >
+        }>
         {this.props.children}
       </form>
     )
@@ -248,8 +247,7 @@ class Input extends React.Component {
           {...otherProps}
           onChange={store.handleInput}
           className={`${className || ''}${thisItem.className}`}
-          value={thisItem.value}
-          />
+          value={thisItem.value} />
 
         <div className={store.state.classNames.invalidFeedback}>{thisItem.invalidFeedback}</div>
       </React.Fragment>
@@ -273,8 +271,7 @@ class Textarea extends React.Component {
           {...otherProps}
           onChange={store.handleInput}
           className={`${className || ''}${thisItem.className}`}
-          value={thisItem.value}
-          >
+          value={thisItem.value}>
           {this.props.children}
         </textarea>
 
@@ -287,11 +284,12 @@ class Textarea extends React.Component {
 class Select extends React.Component {
   constructor (props) {
     super(props)
-    this.props.store.setFormItem(this.props)
+    const value = this.props.children ? { value: this.props.children[0].props.value } : null
+    this.props.store.setFormItem({...this.props, ...value})
   }
 
   render () {
-    const { store, children, className, ...otherProps } = this.props
+    const { store, validations, children, className, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
 
     return (

@@ -257,8 +257,7 @@ var Form = function (_React$Component2) {
         'form',
         _extends({}, otherProps, {
           noValidate: true,
-          onSubmit: this.props.store.onSubmit.bind(this, onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers)
-        }),
+          onSubmit: this.props.store.onSubmit.bind(this, onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers) }),
         this.props.children
       );
     }
@@ -296,8 +295,7 @@ var Input = function (_React$Component3) {
         _react2.default.createElement('input', _extends({}, otherProps, {
           onChange: store.handleInput,
           className: '' + (className || '') + thisItem.className,
-          value: thisItem.value
-        })),
+          value: thisItem.value })),
         _react2.default.createElement(
           'div',
           { className: store.state.classNames.invalidFeedback },
@@ -341,8 +339,7 @@ var Textarea = function (_React$Component4) {
           _extends({}, otherProps, {
             onChange: store.handleInput,
             className: '' + (className || '') + thisItem.className,
-            value: thisItem.value
-          }),
+            value: thisItem.value }),
           this.props.children
         ),
         _react2.default.createElement(
@@ -365,7 +362,8 @@ var Select = function (_React$Component5) {
 
     var _this6 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
-    _this6.props.store.setFormItem(_this6.props);
+    var value = _this6.props.children ? { value: _this6.props.children[0].props.value } : null;
+    _this6.props.store.setFormItem(_extends({}, _this6.props, value));
     return _this6;
   }
 
@@ -374,9 +372,10 @@ var Select = function (_React$Component5) {
     value: function render() {
       var _props4 = this.props,
           store = _props4.store,
+          validations = _props4.validations,
           children = _props4.children,
           className = _props4.className,
-          otherProps = _objectWithoutProperties(_props4, ['store', 'children', 'className']);
+          otherProps = _objectWithoutProperties(_props4, ['store', 'validations', 'children', 'className']);
 
       var thisItem = store.state.formItems[this.props.name];
 
