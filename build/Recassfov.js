@@ -159,9 +159,6 @@ var Provider = function (_React$Component) {
           headers['Content-Type'] = headers.hasOwnProperty('Content-Type') ? headers['Content-Type'] : 'application/x-www-form-urlencoded';
           var data = headers['Content-Type'] === 'application/x-www-form-urlencoded' ? (0, _objectToUrlEncoded2.default)(_formItems) : _formItems;
 
-          console.log(_formItems);
-          console.log(headers);
-
           (0, _axios2.default)({
             url: postUrl,
             method: 'post',
@@ -363,10 +360,13 @@ var Textarea = function (_React$Component4) {
 var Select = function (_React$Component5) {
   _inherits(Select, _React$Component5);
 
-  function Select() {
+  function Select(props) {
     _classCallCheck(this, Select);
 
-    return _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
+    var _this6 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
+
+    _this6.props.store.setFormItem(_this6.props);
+    return _this6;
   }
 
   _createClass(Select, [{
@@ -375,12 +375,26 @@ var Select = function (_React$Component5) {
       var _props4 = this.props,
           store = _props4.store,
           children = _props4.children,
-          otherProps = _objectWithoutProperties(_props4, ['store', 'children']);
+          className = _props4.className,
+          otherProps = _objectWithoutProperties(_props4, ['store', 'children', 'className']);
+
+      var thisItem = store.state.formItems[this.props.name];
 
       return _react2.default.createElement(
-        'select',
-        _extends({}, otherProps, { onChange: store.handleInput }),
-        children
+        _react2.default.Fragment,
+        null,
+        _react2.default.createElement(
+          'select',
+          _extends({}, otherProps, {
+            onChange: store.handleInput,
+            className: '' + (className || '') + thisItem.className }),
+          children
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: store.state.classNames.invalidFeedback },
+          thisItem.invalidFeedback
+        )
       );
     }
   }]);

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { Form, Input, Textarea } from './../src/Recassfov'
+import { Form, Input, Select, Textarea } from './../src/Recassfov'
 
 const validations = {
   username: [
@@ -34,6 +34,13 @@ const validations = {
       rule: 'isLength',
       args: { min: 1 },
       invalidFeedback: 'please provide at least one character'
+    }
+  ],
+  yesOrNo: [
+    {
+      rule: 'isLength',
+      args: { min: 1 },
+      invalidFeedback: 'please select an option'
     }
   ],
   message: [
@@ -99,8 +106,7 @@ class App extends React.Component {
             type='text'
             name='username'
             placeholder='username'
-            validations={validations.username}
-            />
+            validations={validations.username} />
         </div>
 
         <div>
@@ -108,8 +114,7 @@ class App extends React.Component {
             type='email'
             name='email'
             placeholder='email'
-            validations={validations.email}
-            />
+            validations={validations.email} />
         </div>
 
         <div>
@@ -117,8 +122,7 @@ class App extends React.Component {
             type='password'
             name='password'
             placeholder='password'
-            validations={validations.password}
-            />
+            validations={validations.password} />
         </div>
 
         <div>
@@ -126,16 +130,24 @@ class App extends React.Component {
             type='number'
             name='number'
             placeholder='number'
-            validations={validations.number}
-            />
+            validations={validations.number} />
+        </div>
+
+        <div>
+          <Select
+            name='yesOrNo'
+            validations={validations.yesOrNo}>
+            <option value=''>select</option>
+            <option value='yes'>yes</option>
+            <option value='no'>no</option>
+          </Select>
         </div>
 
         <div>
           <Textarea
             name='message'
             placeholder='message'
-            validations={validations.message}
-            />
+            validations={validations.message} />
         </div>
 
         <div>

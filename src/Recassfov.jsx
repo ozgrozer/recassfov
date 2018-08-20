@@ -124,9 +124,6 @@ class Provider extends React.Component {
         headers['Content-Type'] = headers.hasOwnProperty('Content-Type') ? headers['Content-Type'] : 'application/x-www-form-urlencoded'
         const data = headers['Content-Type'] === 'application/x-www-form-urlencoded' ? objectToUrlEncoded(_formItems) : _formItems
 
-        console.log(_formItems)
-        console.log(headers)
-
         axios({
           url: postUrl,
           method: 'post',
@@ -288,13 +285,26 @@ class Textarea extends React.Component {
 }
 
 class Select extends React.Component {
+  constructor (props) {
+    super(props)
+    this.props.store.setFormItem(this.props)
+  }
+
   render () {
-    const { store, children, ...otherProps } = this.props
+    const { store, children, className, ...otherProps } = this.props
+    const thisItem = store.state.formItems[this.props.name]
 
     return (
-      <select {...otherProps} onChange={store.handleInput}>
-        {children}
-      </select>
+      <React.Fragment>
+        <select
+          {...otherProps}
+          onChange={store.handleInput}
+          className={`${className || ''}${thisItem.className}`}>
+          {children}
+        </select>
+
+        <div className={store.state.classNames.invalidFeedback}>{thisItem.invalidFeedback}</div>
+      </React.Fragment>
     )
   }
 }
