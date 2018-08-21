@@ -50,7 +50,9 @@ class Provider extends React.Component {
     this.setState({ formItems })
   }
 
-  handleInput (e) {
+  handleInput (onChange, e) {
+    if (onChange) onChange(e)
+
     const item = e.target
     const formItems = this.state.formItems
 
@@ -75,7 +77,7 @@ class Provider extends React.Component {
   ) {
     e.preventDefault()
 
-    if (onSubmit) onSubmit()
+    if (onSubmit) onSubmit(e)
 
     const formItems = this.state.formItems
     let formItemsValues = {}
@@ -238,14 +240,14 @@ class Input extends React.Component {
   }
 
   render () {
-    const { store, validations, className, ...otherProps } = this.props
+    const { store, validations, className, onChange, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
 
     return (
       <React.Fragment>
         <input
           {...otherProps}
-          onChange={store.handleInput}
+          onChange={store.handleInput.bind(this, onChange)}
           className={`${className || ''}${thisItem.className}`}
           value={thisItem.value} />
 
@@ -262,14 +264,14 @@ class Textarea extends React.Component {
   }
 
   render () {
-    const { store, validations, className, ...otherProps } = this.props
+    const { store, validations, className, onChange, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
 
     return (
       <React.Fragment>
         <textarea
           {...otherProps}
-          onChange={store.handleInput}
+          onChange={store.handleInput.bind(this, onChange)}
           className={`${className || ''}${thisItem.className}`}
           value={thisItem.value}>
           {this.props.children}
@@ -289,14 +291,14 @@ class Select extends React.Component {
   }
 
   render () {
-    const { store, validations, children, className, ...otherProps } = this.props
+    const { store, validations, children, className, onChange, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
 
     return (
       <React.Fragment>
         <select
           {...otherProps}
-          onChange={store.handleInput}
+          onChange={store.handleInput.bind(this, onChange)}
           className={`${className || ''}${thisItem.className}`}>
           {children}
         </select>

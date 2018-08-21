@@ -91,7 +91,9 @@ var Provider = function (_React$Component) {
     }
   }, {
     key: 'handleInput',
-    value: function handleInput(e) {
+    value: function handleInput(onChange, e) {
+      if (onChange) onChange(e);
+
       var item = e.target;
       var formItems = this.state.formItems;
 
@@ -110,7 +112,7 @@ var Provider = function (_React$Component) {
 
       e.preventDefault();
 
-      if (_onSubmit) _onSubmit();
+      if (_onSubmit) _onSubmit(e);
 
       var formItems = this.state.formItems;
       var formItemsValues = {};
@@ -285,7 +287,8 @@ var Input = function (_React$Component3) {
           store = _props2.store,
           validations = _props2.validations,
           className = _props2.className,
-          otherProps = _objectWithoutProperties(_props2, ['store', 'validations', 'className']);
+          onChange = _props2.onChange,
+          otherProps = _objectWithoutProperties(_props2, ['store', 'validations', 'className', 'onChange']);
 
       var thisItem = store.state.formItems[this.props.name];
 
@@ -293,7 +296,7 @@ var Input = function (_React$Component3) {
         _react2.default.Fragment,
         null,
         _react2.default.createElement('input', _extends({}, otherProps, {
-          onChange: store.handleInput,
+          onChange: store.handleInput.bind(this, onChange),
           className: '' + (className || '') + thisItem.className,
           value: thisItem.value })),
         _react2.default.createElement(
@@ -327,7 +330,8 @@ var Textarea = function (_React$Component4) {
           store = _props3.store,
           validations = _props3.validations,
           className = _props3.className,
-          otherProps = _objectWithoutProperties(_props3, ['store', 'validations', 'className']);
+          onChange = _props3.onChange,
+          otherProps = _objectWithoutProperties(_props3, ['store', 'validations', 'className', 'onChange']);
 
       var thisItem = store.state.formItems[this.props.name];
 
@@ -337,7 +341,7 @@ var Textarea = function (_React$Component4) {
         _react2.default.createElement(
           'textarea',
           _extends({}, otherProps, {
-            onChange: store.handleInput,
+            onChange: store.handleInput.bind(this, onChange),
             className: '' + (className || '') + thisItem.className,
             value: thisItem.value }),
           this.props.children
@@ -375,7 +379,8 @@ var Select = function (_React$Component5) {
           validations = _props4.validations,
           children = _props4.children,
           className = _props4.className,
-          otherProps = _objectWithoutProperties(_props4, ['store', 'validations', 'children', 'className']);
+          onChange = _props4.onChange,
+          otherProps = _objectWithoutProperties(_props4, ['store', 'validations', 'children', 'className', 'onChange']);
 
       var thisItem = store.state.formItems[this.props.name];
 
@@ -385,7 +390,7 @@ var Select = function (_React$Component5) {
         _react2.default.createElement(
           'select',
           _extends({}, otherProps, {
-            onChange: store.handleInput,
+            onChange: store.handleInput.bind(this, onChange),
             className: '' + (className || '') + thisItem.className }),
           children
         ),
