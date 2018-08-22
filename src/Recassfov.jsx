@@ -27,7 +27,7 @@ class Provider extends React.Component {
     const formItems = this.state.formItems
 
     formItems[item.name] = {
-      value: item.value || '',
+      value: item.value || item.defaultValue || '',
       validations: item.validations || [],
       invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
       className: ''

@@ -136,6 +136,7 @@ class App extends React.Component {
         <div>
           <Select
             name='yesOrNo'
+            defaultValue='yes'
             validations={validations.yesOrNo}>
             <option value=''>select</option>
             <option value='yes'>yes</option>

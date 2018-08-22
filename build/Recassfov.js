@@ -64,7 +64,7 @@ var Provider = function (_React$Component) {
       var formItems = this.state.formItems;
 
       formItems[item.name] = {
-        value: item.value || '',
+        value: item.value || item.defaultValue || '',
         validations: item.validations || [],
         invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
         className: ''
