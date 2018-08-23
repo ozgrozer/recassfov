@@ -27,7 +27,7 @@ class Provider extends React.Component {
     const formItems = this.state.formItems
 
     formItems[item.name] = {
-      value: item.value || item.defaultValue || '',
+      value: item.value || '',
       validations: item.validations || [],
       invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
       className: ''
@@ -239,6 +239,12 @@ class Input extends React.Component {
     this.props.store.setFormItem(this.props)
   }
 
+  componentDidUpdate (prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.props.store.setFormItem(this.props)
+    }
+  }
+
   render () {
     const { store, validations, className, onChange, ...otherProps } = this.props
     const thisItem = store.state.formItems[this.props.name]
@@ -261,6 +267,12 @@ class Textarea extends React.Component {
   constructor (props) {
     super(props)
     this.props.store.setFormItem(this.props)
+  }
+
+  componentDidUpdate (prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.props.store.setFormItem(this.props)
+    }
   }
 
   render () {
@@ -286,8 +298,13 @@ class Textarea extends React.Component {
 class Select extends React.Component {
   constructor (props) {
     super(props)
-    const value = this.props.children ? { value: this.props.children[0].props.value } : null
-    this.props.store.setFormItem({...this.props, ...value})
+    this.props.store.setFormItem(this.props)
+  }
+
+  componentDidUpdate (prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.props.store.setFormItem(this.props)
+    }
   }
 
   render () {
@@ -299,7 +316,8 @@ class Select extends React.Component {
         <select
           {...otherProps}
           onChange={store.handleInput.bind(this, onChange)}
-          className={`${className || ''}${thisItem.className}`}>
+          className={`${className || ''}${thisItem.className}`}
+          value={thisItem.value}>
           {children}
         </select>
 

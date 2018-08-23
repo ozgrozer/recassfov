@@ -53,6 +53,20 @@ const validations = {
 }
 
 class App extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      selectDefaultValue: 'yes'
+    }
+
+    const func = () => {
+      this.setState({
+        selectDefaultValue: 'no'
+      })
+    }
+    setTimeout(func.bind(this), 2000)
+  }
+
   onSubmit () {
     console.log('onSubmit')
   }
@@ -136,7 +150,7 @@ class App extends React.Component {
         <div>
           <Select
             name='yesOrNo'
-            defaultValue='yes'
+            value={this.state.selectDefaultValue}
             validations={validations.yesOrNo}>
             <option value=''>select</option>
             <option value='yes'>yes</option>

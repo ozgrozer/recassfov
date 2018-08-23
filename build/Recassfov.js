@@ -64,7 +64,7 @@ var Provider = function (_React$Component) {
       var formItems = this.state.formItems;
 
       formItems[item.name] = {
-        value: item.value || item.defaultValue || '',
+        value: item.value || '',
         validations: item.validations || [],
         invalidFeedback: item.validations ? item.validations[0].invalidFeedback : '',
         className: ''
@@ -281,6 +281,13 @@ var Input = function (_React$Component3) {
   }
 
   _createClass(Input, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.value !== prevProps.value) {
+        this.props.store.setFormItem(this.props);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props2 = this.props,
@@ -324,6 +331,13 @@ var Textarea = function (_React$Component4) {
   }
 
   _createClass(Textarea, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.value !== prevProps.value) {
+        this.props.store.setFormItem(this.props);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props3 = this.props,
@@ -366,12 +380,18 @@ var Select = function (_React$Component5) {
 
     var _this6 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
-    var value = _this6.props.children ? { value: _this6.props.children[0].props.value } : null;
-    _this6.props.store.setFormItem(_extends({}, _this6.props, value));
+    _this6.props.store.setFormItem(_this6.props);
     return _this6;
   }
 
   _createClass(Select, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps) {
+      if (this.props.value !== prevProps.value) {
+        this.props.store.setFormItem(this.props);
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props4 = this.props,
@@ -391,7 +411,8 @@ var Select = function (_React$Component5) {
           'select',
           _extends({}, otherProps, {
             onChange: store.handleInput.bind(this, onChange),
-            className: '' + (className || '') + thisItem.className }),
+            className: '' + (className || '') + thisItem.className,
+            value: thisItem.value }),
           children
         ),
         _react2.default.createElement(
