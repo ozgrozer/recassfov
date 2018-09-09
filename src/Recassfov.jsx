@@ -23,7 +23,7 @@ class Provider extends React.Component {
     this.setState({ classNames })
   }
 
-  setFormItem (item) {
+  setFormItem (item, firstTime) {
     const formItems = this.state.formItems
 
     formItems[item.name] = {
@@ -35,9 +35,11 @@ class Provider extends React.Component {
 
     this.setState({ formItems })
 
-    this.setState((prevState) => ({
-      totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
-    }))
+    if (firstTime) {
+      this.setState((prevState) => ({
+        totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
+      }))
+    }
   }
 
   cleanFormItems () {
@@ -236,7 +238,7 @@ class Form extends React.Component {
 class Input extends React.Component {
   constructor (props) {
     super(props)
-    this.props.store.setFormItem(this.props)
+    this.props.store.setFormItem(this.props, 1)
   }
 
   componentDidUpdate (prevProps) {
@@ -266,7 +268,7 @@ class Input extends React.Component {
 class Textarea extends React.Component {
   constructor (props) {
     super(props)
-    this.props.store.setFormItem(this.props)
+    this.props.store.setFormItem(this.props, 1)
   }
 
   componentDidUpdate (prevProps) {
@@ -298,7 +300,7 @@ class Textarea extends React.Component {
 class Select extends React.Component {
   constructor (props) {
     super(props)
-    this.props.store.setFormItem(this.props)
+    this.props.store.setFormItem(this.props, 1)
   }
 
   componentDidUpdate (prevProps) {

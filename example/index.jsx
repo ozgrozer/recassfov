@@ -56,12 +56,13 @@ class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      selectDefaultValue: 'yes'
+      yesOrNo: 'yes',
+      username: 'john'
     }
 
     const func = () => {
       this.setState({
-        selectDefaultValue: 'no'
+        yesOrNo: 'no'
       })
     }
     setTimeout(func.bind(this), 2000)
@@ -94,6 +95,18 @@ class App extends React.Component {
     console.log(res.ajaxResult)
   }
 
+  handleInput (e) {
+    const value = e.target.value
+    this.setState({ username: value })
+    console.log('handleInput', value)
+  }
+
+  handleSelect (e) {
+    const value = e.target.value
+    this.setState({ yesOrNo: value, username: '2' })
+    console.log('handleSelect', value)
+  }
+
   render () {
     return (
       <Form
@@ -120,6 +133,8 @@ class App extends React.Component {
             type='text'
             name='username'
             placeholder='username'
+            value={this.state.username}
+            onChange={this.handleInput.bind(this)}
             validations={validations.username} />
         </div>
 
@@ -150,7 +165,8 @@ class App extends React.Component {
         <div>
           <Select
             name='yesOrNo'
-            value={this.state.selectDefaultValue}
+            value={this.state.yesOrNo}
+            onChange={this.handleSelect.bind(this)}
             validations={validations.yesOrNo}>
             <option value=''>select</option>
             <option value='yes'>yes</option>

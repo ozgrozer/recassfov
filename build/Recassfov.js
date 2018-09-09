@@ -60,7 +60,7 @@ var Provider = function (_React$Component) {
     }
   }, {
     key: 'setFormItem',
-    value: function setFormItem(item) {
+    value: function setFormItem(item, firstTime) {
       var formItems = this.state.formItems;
 
       formItems[item.name] = {
@@ -72,11 +72,13 @@ var Provider = function (_React$Component) {
 
       this.setState({ formItems: formItems });
 
-      this.setState(function (prevState) {
-        return {
-          totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
-        };
-      });
+      if (firstTime) {
+        this.setState(function (prevState) {
+          return {
+            totalValidations: prevState.totalValidations + (item.validations ? item.validations.length : 0)
+          };
+        });
+      }
     }
   }, {
     key: 'cleanFormItems',
@@ -276,7 +278,7 @@ var Input = function (_React$Component3) {
 
     var _this4 = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
 
-    _this4.props.store.setFormItem(_this4.props);
+    _this4.props.store.setFormItem(_this4.props, 1);
     return _this4;
   }
 
@@ -326,7 +328,7 @@ var Textarea = function (_React$Component4) {
 
     var _this5 = _possibleConstructorReturn(this, (Textarea.__proto__ || Object.getPrototypeOf(Textarea)).call(this, props));
 
-    _this5.props.store.setFormItem(_this5.props);
+    _this5.props.store.setFormItem(_this5.props, 1);
     return _this5;
   }
 
@@ -380,7 +382,7 @@ var Select = function (_React$Component5) {
 
     var _this6 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
-    _this6.props.store.setFormItem(_this6.props);
+    _this6.props.store.setFormItem(_this6.props, 1);
     return _this6;
   }
 

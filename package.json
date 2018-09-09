@@ -1,6 +1,6 @@
 {
   "name": "recassfov",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "description": "React client and server side form validation",
   "main": "./build/Recassfov.js",
   "repository": {
