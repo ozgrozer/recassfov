@@ -285,7 +285,7 @@ var Input = function (_React$Component3) {
   _createClass(Input, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
-      if (this.props.value !== prevProps.value) {
+      if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
         this.props.store.setFormItem(this.props);
       }
     }
@@ -335,7 +335,7 @@ var Textarea = function (_React$Component4) {
   _createClass(Textarea, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
-      if (this.props.value !== prevProps.value) {
+      if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
         this.props.store.setFormItem(this.props);
       }
     }
@@ -389,7 +389,7 @@ var Select = function (_React$Component5) {
   _createClass(Select, [{
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps) {
-      if (this.props.value !== prevProps.value) {
+      if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
         this.props.store.setFormItem(this.props);
       }
     }

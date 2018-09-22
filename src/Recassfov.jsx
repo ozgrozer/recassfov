@@ -242,7 +242,7 @@ class Input extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.value !== prevProps.value) {
+    if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
       this.props.store.setFormItem(this.props)
     }
   }
@@ -272,7 +272,7 @@ class Textarea extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.value !== prevProps.value) {
+    if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
       this.props.store.setFormItem(this.props)
     }
   }
@@ -304,7 +304,7 @@ class Select extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.value !== prevProps.value) {
+    if (this.props.value !== prevProps.value || this.props.validations !== prevProps.validations) {
       this.props.store.setFormItem(this.props)
     }
   }

@@ -57,12 +57,20 @@ class App extends React.Component {
     super()
     this.state = {
       yesOrNo: 'yes',
-      username: 'john'
+      username: 'john',
+      usernameValidation: validations.username
     }
 
     const func = () => {
       this.setState({
-        yesOrNo: 'no'
+        yesOrNo: 'no',
+        usernameValidation: [
+          {
+            rule: 'isLength',
+            args: { min: 5, max: 40 },
+            invalidFeedback: 'please provide a username (min: 5, max: 40)'
+          }
+        ]
       })
     }
     setTimeout(func.bind(this), 2000)
@@ -80,6 +88,7 @@ class App extends React.Component {
   invalidFormBeforePost (res) {
     console.log('invalidFormBeforePost')
     console.log(res.formItems)
+    console.log(this.state)
   }
 
   validFormAfterPost (res) {
@@ -112,7 +121,7 @@ class App extends React.Component {
       <Form
         onSubmit={this.onSubmit}
         validFormBeforePost={this.validFormBeforePost}
-        invalidFormBeforePost={this.invalidFormBeforePost}
+        invalidFormBeforePost={this.invalidFormBeforePost.bind(this)}
         validFormAfterPost={this.validFormAfterPost}
         invalidFormAfterPost={this.invalidFormAfterPost}
         postUrl='https://runkit.io/ozgrozer/recassfov-backend-demo/branches/master/signup'
@@ -135,7 +144,7 @@ class App extends React.Component {
             placeholder='username'
             value={this.state.username}
             onChange={this.handleInput.bind(this)}
-            validations={validations.username} />
+            validations={this.state.usernameValidation} />
         </div>
 
         <div>
