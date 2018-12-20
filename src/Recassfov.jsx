@@ -67,20 +67,7 @@ class Provider extends React.Component {
     this.setState({ formItems })
   }
 
-  onSubmit (
-    onSubmit,
-    validFormBeforePost,
-    invalidFormBeforePost,
-    validFormAfterPost,
-    invalidFormAfterPost,
-    postUrl,
-    headers,
-    e
-  ) {
-    e.preventDefault()
-
-    if (onSubmit) onSubmit(e)
-
+  validateFormItems () {
     const formItems = this.state.formItems
     let formItemsValues = {}
     let howManyOfFormItemsAreValidated = 0
@@ -111,10 +98,34 @@ class Provider extends React.Component {
 
     this.setState({ formItems })
 
-    if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
+    const result = {}
+    result.success = howManyOfFormItemsAreValidated === this.state.totalValidations
+    result.formItemsValues = formItemsValues
+
+    return result
+  }
+
+  onSubmit (
+    onSubmit,
+    validFormBeforePost,
+    invalidFormBeforePost,
+    validFormAfterPost,
+    invalidFormAfterPost,
+    postUrl,
+    headers,
+    e
+  ) {
+    e.preventDefault()
+
+    if (onSubmit) onSubmit(e)
+
+    const validateFormItems = this.validateFormItems()
+    const formItems = this.state.formItems
+
+    if (validateFormItems.success) {
       if (validFormBeforePost) {
         validFormBeforePost({
-          formItems: formItemsValues
+          formItems: validateFormItems.formItemsValues
         })
       }
 
@@ -140,7 +151,7 @@ class Provider extends React.Component {
             if (Object.keys(validations).length) {
               if (invalidFormAfterPost) {
                 invalidFormAfterPost({
-                  formItems: formItemsValues,
+                  formItems: validateFormItems.formItemsValues,
                   ajaxResult: res.data
                 })
               }
@@ -154,7 +165,7 @@ class Provider extends React.Component {
             } else {
               if (validFormAfterPost) {
                 validFormAfterPost({
-                  formItems: formItemsValues,
+                  formItems: validateFormItems.formItemsValues,
                   ajaxResult: res.data,
                   cleanFormItems: this.cleanFormItems.bind(this)
                 })
@@ -168,7 +179,7 @@ class Provider extends React.Component {
     } else {
       if (invalidFormBeforePost) {
         invalidFormBeforePost({
-          formItems: formItemsValues
+          formItems: validateFormItems.formItemsValues
         })
       }
     }

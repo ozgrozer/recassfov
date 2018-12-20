@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 
 import { Form, Input, Select, Textarea } from './../src/Recassfov'
@@ -28,6 +28,13 @@ const validations = {
 }
 
 const App = () => {
+  const [message, setMessage] = useState('')
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage('3 seconds past')
+    }, 3000)
+  }, [])
+
   return (
     <Form
       postUrl='https://runkit.io/ozgrozer/recassfov-backend-demo/branches/master/signup'>
@@ -63,6 +70,7 @@ const App = () => {
       <div>
         <Textarea
           name='message'
+          value={message}
           placeholder='Message'
           validations={validations.message} />
       </div>

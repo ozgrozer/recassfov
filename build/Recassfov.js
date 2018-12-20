@@ -108,13 +108,9 @@ var Provider = function (_React$Component) {
       this.setState({ formItems: formItems });
     }
   }, {
-    key: 'onSubmit',
-    value: function onSubmit(_onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers, e) {
+    key: 'validateFormItems',
+    value: function validateFormItems() {
       var _this2 = this;
-
-      e.preventDefault();
-
-      if (_onSubmit) _onSubmit(e);
 
       var formItems = this.state.formItems;
       var formItemsValues = {};
@@ -146,10 +142,28 @@ var Provider = function (_React$Component) {
 
       this.setState({ formItems: formItems });
 
-      if (howManyOfFormItemsAreValidated === this.state.totalValidations) {
+      var result = {};
+      result.success = howManyOfFormItemsAreValidated === this.state.totalValidations;
+      result.formItemsValues = formItemsValues;
+
+      return result;
+    }
+  }, {
+    key: 'onSubmit',
+    value: function onSubmit(_onSubmit, validFormBeforePost, invalidFormBeforePost, validFormAfterPost, invalidFormAfterPost, postUrl, headers, e) {
+      var _this3 = this;
+
+      e.preventDefault();
+
+      if (_onSubmit) _onSubmit(e);
+
+      var validateFormItems = this.validateFormItems();
+      var formItems = this.state.formItems;
+
+      if (validateFormItems.success) {
         if (validFormBeforePost) {
           validFormBeforePost({
-            formItems: formItemsValues
+            formItems: validateFormItems.formItemsValues
           });
         }
 
@@ -174,23 +188,23 @@ var Provider = function (_React$Component) {
             if (Object.keys(validations).length) {
               if (invalidFormAfterPost) {
                 invalidFormAfterPost({
-                  formItems: formItemsValues,
+                  formItems: validateFormItems.formItemsValues,
                   ajaxResult: res.data
                 });
               }
 
               Object.keys(validations).map(function (itemName) {
                 formItems[itemName].invalidFeedback = validations[itemName];
-                formItems[itemName].className = ' ' + _this2.state.classNames.invalidInput;
+                formItems[itemName].className = ' ' + _this3.state.classNames.invalidInput;
               });
 
-              _this2.setState({ formItems: formItems });
+              _this3.setState({ formItems: formItems });
             } else {
               if (validFormAfterPost) {
                 validFormAfterPost({
-                  formItems: formItemsValues,
+                  formItems: validateFormItems.formItemsValues,
                   ajaxResult: res.data,
-                  cleanFormItems: _this2.cleanFormItems.bind(_this2)
+                  cleanFormItems: _this3.cleanFormItems.bind(_this3)
                 });
               }
             }
@@ -201,7 +215,7 @@ var Provider = function (_React$Component) {
       } else {
         if (invalidFormBeforePost) {
           invalidFormBeforePost({
-            formItems: formItemsValues
+            formItems: validateFormItems.formItemsValues
           });
         }
       }
@@ -234,12 +248,12 @@ var Form = function (_React$Component2) {
   function Form(props) {
     _classCallCheck(this, Form);
 
-    var _this3 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+    var _this4 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
-    if (_this3.props.classNames) {
-      _this3.props.store.setClassNames(_this3.props.classNames);
+    if (_this4.props.classNames) {
+      _this4.props.store.setClassNames(_this4.props.classNames);
     }
-    return _this3;
+    return _this4;
   }
 
   _createClass(Form, [{
@@ -276,10 +290,10 @@ var Input = function (_React$Component3) {
   function Input(props) {
     _classCallCheck(this, Input);
 
-    var _this4 = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
 
-    _this4.props.store.setFormItem(_this4.props, 1);
-    return _this4;
+    _this5.props.store.setFormItem(_this5.props, 1);
+    return _this5;
   }
 
   _createClass(Input, [{
@@ -326,10 +340,10 @@ var Textarea = function (_React$Component4) {
   function Textarea(props) {
     _classCallCheck(this, Textarea);
 
-    var _this5 = _possibleConstructorReturn(this, (Textarea.__proto__ || Object.getPrototypeOf(Textarea)).call(this, props));
+    var _this6 = _possibleConstructorReturn(this, (Textarea.__proto__ || Object.getPrototypeOf(Textarea)).call(this, props));
 
-    _this5.props.store.setFormItem(_this5.props, 1);
-    return _this5;
+    _this6.props.store.setFormItem(_this6.props, 1);
+    return _this6;
   }
 
   _createClass(Textarea, [{
@@ -380,10 +394,10 @@ var Select = function (_React$Component5) {
   function Select(props) {
     _classCallCheck(this, Select);
 
-    var _this6 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
 
-    _this6.props.store.setFormItem(_this6.props, 1);
-    return _this6;
+    _this7.props.store.setFormItem(_this7.props, 1);
+    return _this7;
   }
 
   _createClass(Select, [{
