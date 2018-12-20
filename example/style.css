@@ -1,20 +1,10 @@
-.is-valid {
-  border: 1px solid #28a745;
-}
 .is-invalid {
   border: 1px solid #dc3545;
 }
-
-.valid-feedback, .invalid-feedback {
-  display: none;
-}
-.valid-feedback {
-  color: #28a745;
-}
 .invalid-feedback {
+  display: none;
   color: #dc3545;
 }
-
-.is-valid~.valid-feedback, .is-invalid~.invalid-feedback {
+.is-invalid~.invalid-feedback {
   display: block;
 }
