@@ -1,6 +1,6 @@
 {
   "name": "recassfov",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "React client and server side form validation",
   "main": "./build/Recassfov.js",
   "repository": {
@@ -25,8 +25,8 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "react": "16.7.0",
-    "react-dom": "16.7.0",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
     "validator": "^10.9.0"
   },
   "devDependencies": {
